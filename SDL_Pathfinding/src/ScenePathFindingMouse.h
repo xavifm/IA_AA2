@@ -1,7 +1,5 @@
 #pragma once
 #include <vector>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <time.h>
 #include "Scene.h"
@@ -9,6 +7,9 @@
 #include "Seek.h"
 #include "PathFollowing.h"
 #include "Grid.h"
+#include "BFS.h"
+#include "Graph.h"
+
 
 class ScenePathFindingMouse :
 	public Scene

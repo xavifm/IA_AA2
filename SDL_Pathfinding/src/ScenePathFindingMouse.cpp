@@ -56,8 +56,17 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 		if (event->button.button == SDL_BUTTON_LEFT)
 		{
 			Vector2D cell = maze->pix2cell(Vector2D((float)(event->button.x), (float)(event->button.y)));
-			if (maze->isValidCell(cell)) {
-				agents[0]->addPathPoint(maze->cell2pix(cell));
+			if (maze->isValidCell(cell))
+			{
+				if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
+				Vector2D pos = maze->pix2cell(agents[0]->getPosition());
+				BFS* BFSAlgorythm = new BFS();
+				std::stack<Node*> pathfindingBFS = BFSAlgorythm->calculatePath(pos, cell, maze);
+				while (!pathfindingBFS.empty())
+				{
+					agents[0]->addPathPoint(maze->cell2pix(pathfindingBFS.top()->position));
+					pathfindingBFS.pop();
+				}
 			}
 		}
 		break;
