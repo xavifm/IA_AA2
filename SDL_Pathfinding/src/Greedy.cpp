@@ -1,0 +1,95 @@
+#include "Greedy.h"
+#include <math.h>
+
+float Greedy::Heuristic(Vector2D* goal, Vector2D* current)
+{
+	return sqrt(pow(current->x - goal->x, 2) + pow(current->y - goal->y, 2));
+}
+
+std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
+{
+	std::priority_queue<Node*, std::vector<Node*>, std::greater_equal<Node*>> frontier;
+	Node* firstNode = new Node(*position);
+
+	frontier.push(firstNode);
+	std::vector<std::vector<Node>> came_from(graph->getNumCellY());
+
+	for (int i = 0; i < graph->getNumCellY(); i++)
+	{
+		std::vector<Node> temp(graph->getNumCellX());
+		came_from[i] = temp;
+	}
+
+	came_from[position->y][position->x].position = NULL;
+	Node* current;
+
+	while (!frontier.empty())
+	{
+		current = frontier.top();
+		frontier.pop();
+		if (current->position == *goal)
+			break;
+
+		/*for (size_t i = 0; i < current->GetNeighbourCount(); i++)
+		{
+			Vector2D neighbour = current->GetNeighbour(i);
+			if (graph->isValidCell(neighbour) && came_from[neighbour.y][neighbour.x].position == NULL)
+			{
+				float new_cost = Heuristic(goal, &neighbour);
+
+				Node* node = new Node(neighbour, new_cost);
+				frontier.push(node);
+
+				came_from[neighbour.y][neighbour.x].position = current->position;
+			}
+		}*/
+
+		if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)) && came_from[current->position.y + 1][current->position.x].position == NULL)
+		{
+			float new_cost = Heuristic(goal, new Vector2D(current->position.x, current->position.y + 1));
+
+			Node* node = new Node(Vector2D(current->position.x, current->position.y + 1), new_cost);
+			frontier.push(node);
+
+			came_from[current->position.y + 1][current->position.x].position = current->position;
+		}
+		if (graph->isValidCell(Vector2D(current->position.x - 1, current->position.y)) && came_from[current->position.y][current->position.x - 1].position == NULL)
+		{
+			float new_cost = Heuristic(goal, new Vector2D(current->position.x - 1, current->position.y));
+
+			Node* node = new Node(Vector2D(current->position.x - 1, current->position.y), new_cost);
+			frontier.push(node);
+
+			came_from[current->position.y][current->position.x - 1].position = current->position;
+		}
+		if (graph->isValidCell(Vector2D(current->position.x, current->position.y - 1)) && came_from[current->position.y - 1][current->position.x].position == NULL)
+		{
+			float new_cost = Heuristic(goal, new Vector2D(current->position.x, current->position.y - 1));
+
+			Node* node = new Node(Vector2D(current->position.x, current->position.y - 1), new_cost);
+			frontier.push(node);
+
+			came_from[current->position.y - 1][current->position.x].position = current->position;
+		}
+		if (graph->isValidCell(Vector2D(current->position.x + 1, current->position.y)) && came_from[current->position.y][current->position.x + 1].position == NULL)
+		{
+			float new_cost = Heuristic(goal, new Vector2D(current->position.x + 1, current->position.y));
+
+			Node* node = new Node(Vector2D(current->position.x + 1, current->position.y), new_cost);
+			frontier.push(node);
+
+			came_from[current->position.y][current->position.x + 1].position = current->position;
+		}
+	}
+
+	Vector2D currentPos = *goal;
+	std::stack<Node*> path;
+	path.push(current);
+	while (currentPos != *position)
+	{
+		Node* node = new Node(came_from[currentPos.y][currentPos.x].position);
+		path.push(node);
+		currentPos = came_from[currentPos.y][currentPos.x].position;
+	}
+	return path;
+}

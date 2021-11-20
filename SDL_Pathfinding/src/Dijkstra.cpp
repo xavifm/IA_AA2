@@ -3,8 +3,7 @@
 std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
 {
 	std::priority_queue<Node*, std::vector<Node*>, std::greater_equal<Node*>> frontier;
-	Node* firstNode = new Node();
-	firstNode->position = *position;
+	Node* firstNode = new Node(*position);
 
 	frontier.push(firstNode);
 	std::vector<std::vector<Node>> came_from(graph->getNumCellY());
@@ -17,7 +16,7 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 
 	came_from[position->y][position->x].position = NULL;
 	came_from[position->y][position->x].weight = 0;
-	Node* current = new Node();
+	Node* current;
 
 	while (!frontier.empty())
 	{
@@ -26,6 +25,24 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 		frontier.pop();
 		if (current->position == *goal)
 			break;
+
+		/*for (size_t i = 0; i < 4; i++)
+		{
+			Vector2D neighbour = current->GetNeighbour(i);
+
+			if (graph->isValidCell(neighbour))
+			{
+				if (came_from[neighbour.y][neighbour.x].weight == NULL || new_cost < came_from[neighbour.y][neighbour.x].weight)
+				{
+					came_from[neighbour.y][neighbour.x].weight = new_cost;
+
+					Node* node = new Node(neighbour, new_cost);
+					frontier.push(node);
+
+					came_from[neighbour.y][neighbour.x].position = current->position;
+				}
+			}
+		}*/
 
 		if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)))
 		{
@@ -82,8 +99,8 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 	path.push(current);
 	while (currentPos != *position)
 	{
-		Node* node = new Node();
-		node->position = came_from[currentPos.y][currentPos.x].position;
+		Node* node = new Node(came_from[currentPos.y][currentPos.x].position);
+
 		path.push(node);
 		currentPos = came_from[currentPos.y][currentPos.x].position;
 	}
