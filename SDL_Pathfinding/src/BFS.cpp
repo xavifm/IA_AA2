@@ -2,7 +2,7 @@
 
 std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* graph)
 {
-	std::priority_queue<Node*, std::vector<Node*>, std::greater<Node*>> frontier;
+	std::queue<Node*> frontier;
 	Node* firstNode = new Node();
 	firstNode->position = position;
 
@@ -21,7 +21,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* gra
 
 	while (!frontier.empty())
 	{
-		current = frontier.top();
+		current = frontier.front();
 		float new_cost = came_from[current->position.y][current->position.x].weight + 1;
 		frontier.pop();
 		if (current->position == goal)
@@ -30,7 +30,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* gra
 		{
 			if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)))
 			{
-				if (came_from[current->position.y + 1][current->position.x].weight == NULL || new_cost < came_from[current->position.y + 1][current->position.x].weight)
+				if (came_from[current->position.y + 1][current->position.x].weight == NULL)
 				{
 					came_from[current->position.y + 1][current->position.x].weight = new_cost;
 					Node* node = new Node();
@@ -42,7 +42,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* gra
 			}
 			if (graph->isValidCell(Vector2D(current->position.x - 1, current->position.y)))
 			{
-				if (came_from[current->position.y][current->position.x - 1].weight == NULL || new_cost < came_from[current->position.y][current->position.x - 1].weight)
+				if (came_from[current->position.y][current->position.x - 1].weight == NULL)
 				{
 					came_from[current->position.y][current->position.x - 1].weight = new_cost;
 					Node* node = new Node();
@@ -54,7 +54,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* gra
 			}
 			if (graph->isValidCell(Vector2D(current->position.x, current->position.y - 1)))
 			{
-				if (came_from[current->position.y - 1][current->position.x].weight == NULL || new_cost < came_from[current->position.y - 1][current->position.x].weight)
+				if (came_from[current->position.y - 1][current->position.x].weight == NULL)
 				{
 					came_from[current->position.y - 1][current->position.x].weight = new_cost;
 					Node* node = new Node();
@@ -66,7 +66,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D position, Vector2D goal, Grid* gra
 			}
 			if (graph->isValidCell(Vector2D(current->position.x + 1, current->position.y)))
 			{
-				if (came_from[current->position.y][current->position.x + 1].weight == NULL || new_cost < came_from[current->position.y][current->position.x + 1].weight)
+				if (came_from[current->position.y][current->position.x + 1].weight == NULL)
 				{
 					came_from[current->position.y][current->position.x + 1].weight = new_cost;
 					Node* node = new Node();
