@@ -7,8 +7,10 @@
 #include "Seek.h"
 #include "PathFollowing.h"
 #include "Grid.h"
-#include "BFS.h"
+#include "PathfindingAlgorythm.h"
 #include "Graph.h"
+#include "Dijkstra.h"
+#include "BFS.h"
 
 
 class ScenePathFindingMouse :
@@ -23,6 +25,8 @@ public:
 private:
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;
+
+	PathfindingAlgorythm* pathFinder;
 
 	Grid *maze;
 	bool draw_grid;

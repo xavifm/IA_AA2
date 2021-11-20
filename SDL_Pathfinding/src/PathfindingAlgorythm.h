@@ -1,18 +1,18 @@
 #pragma once
 #include <iostream>
 #include <minmax.h>
+#include "Grid.h"
+#include "Graph.h"
 #include <SDL.h>
-#include <SDL_image.h>
 #include "SDL_SimpleApp.h"
-#include "Path.h"
 #include "Vector2D.h"
 #include "utils.h"
-#include "Graph.h"
+#include <stack>
 
 
 class PathfindingAlgorythm
 {
 	public:
-		void applyPath(Node* current);
+		virtual std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Grid* graph) = 0;
 };
 

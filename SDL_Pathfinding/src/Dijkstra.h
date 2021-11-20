@@ -6,9 +6,8 @@
 #include <queue>
 #include <stack>
 
-
-class BFS : public PathfindingAlgorythm
+class Dijkstra : public PathfindingAlgorythm
 {
-	public:
-		std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Grid* graph);
+public:
+	std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Grid* graph);
 };
