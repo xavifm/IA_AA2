@@ -10,7 +10,6 @@ class Node
 public:
 	Vector2D position;
 	float weight;
-	float cost_so_far;
 
 	Node() : position(NULL), weight(0) {};
 	Node(Vector2D position);
