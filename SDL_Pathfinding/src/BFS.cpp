@@ -25,46 +25,17 @@ std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Grid* g
 		frontier.pop();
 		if (current->position == *goal)
 			break;
-		else
+
+		for (size_t i = 0; i < current->GetNeighbourCount(); i++)
 		{
-			if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)))
+			Vector2D neighbour = current->GetNeighbour(i);
+			if (graph->isValidCell(neighbour))
 			{
-				if (came_from[current->position.y + 1][current->position.x].position == NULL)
+				if (came_from[neighbour.y][neighbour.x].position == NULL)
 				{
-					Node* node = new Node();
-					node->position = Vector2D(current->position.x, current->position.y + 1);
-					frontier.push(node);
-					came_from[current->position.y + 1][current->position.x].position = current->position;
-				}
-			}
-			if (graph->isValidCell(Vector2D(current->position.x - 1, current->position.y)))
-			{
-				if (came_from[current->position.y][current->position.x - 1].position == NULL)
-				{
-					Node* node = new Node();
-					node->position = Vector2D(current->position.x - 1, current->position.y);
-					frontier.push(node);
-					came_from[current->position.y][current->position.x - 1].position = current->position;
-				}
-			}
-			if (graph->isValidCell(Vector2D(current->position.x, current->position.y - 1)))
-			{
-				if (came_from[current->position.y - 1][current->position.x].position == NULL)
-				{
-					Node* node = new Node();
-					node->position = Vector2D(current->position.x, current->position.y - 1);
-					frontier.push(node);
-					came_from[current->position.y - 1][current->position.x].position = current->position;
-				}
-			}
-			if (graph->isValidCell(Vector2D(current->position.x + 1, current->position.y)))
-			{
-				if (came_from[current->position.y][current->position.x + 1].position == NULL)
-				{
-					Node* node = new Node();
-					node->position = Vector2D(current->position.x + 1, current->position.y);
-					frontier.push(node);
-					came_from[current->position.y][current->position.x + 1].position = current->position;
+					frontier.push(new Node(neighbour));
+
+					came_from[neighbour.y][neighbour.x].position = current->position;
 				}
 			}
 		}

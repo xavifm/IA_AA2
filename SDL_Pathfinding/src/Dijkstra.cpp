@@ -29,69 +29,19 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 		for (size_t i = 0; i < 4; i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
-
 			if (graph->isValidCell(neighbour))
 			{
+				//Sumarli el pes del node en el graph
 				if (came_from[neighbour.y][neighbour.x].weight == NULL || new_cost < came_from[neighbour.y][neighbour.x].weight)
 				{
-					came_from[neighbour.y][neighbour.x].weight = new_cost;
-
 					Node* node = new Node(neighbour, new_cost);
 					frontier.push(node);
 
 					came_from[neighbour.y][neighbour.x].position = current->position;
+					came_from[neighbour.y][neighbour.x].weight = new_cost;
 				}
 			}
 		}
-
-		/*if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)))
-		{
-			if (came_from[current->position.y + 1][current->position.x].weight == NULL || new_cost < came_from[current->position.y + 1][current->position.x].weight)
-			{
-				came_from[current->position.y + 1][current->position.x].weight = new_cost;
-				Node* node = new Node();
-				node->position = Vector2D(current->position.x, current->position.y + 1);
-				node->weight = new_cost;
-				frontier.push(node);
-				came_from[current->position.y + 1][current->position.x].position = current->position;
-			}
-		}
-		if (graph->isValidCell(Vector2D(current->position.x - 1, current->position.y)))
-		{
-			if (came_from[current->position.y][current->position.x - 1].weight == NULL || new_cost < came_from[current->position.y][current->position.x - 1].weight)
-			{
-				came_from[current->position.y][current->position.x - 1].weight = new_cost;
-				Node* node = new Node();
-				node->position = Vector2D(current->position.x - 1, current->position.y);
-				node->weight = new_cost;
-				frontier.push(node);
-				came_from[current->position.y][current->position.x - 1].position = current->position;
-			}
-		}
-		if (graph->isValidCell(Vector2D(current->position.x, current->position.y - 1)))
-		{
-			if (came_from[current->position.y - 1][current->position.x].weight == NULL || new_cost < came_from[current->position.y - 1][current->position.x].weight)
-			{
-				came_from[current->position.y - 1][current->position.x].weight = new_cost;
-				Node* node = new Node();
-				node->position = Vector2D(current->position.x, current->position.y - 1);
-				node->weight = new_cost;
-				frontier.push(node);
-				came_from[current->position.y - 1][current->position.x].position = current->position;
-			}
-		}
-		if (graph->isValidCell(Vector2D(current->position.x + 1, current->position.y)))
-		{
-			if (came_from[current->position.y][current->position.x + 1].weight == NULL || new_cost < came_from[current->position.y][current->position.x + 1].weight)
-			{
-				came_from[current->position.y][current->position.x + 1].weight = new_cost;
-				Node* node = new Node();
-				node->position = Vector2D(current->position.x + 1, current->position.y);
-				node->weight = new_cost;
-				frontier.push(node);
-				came_from[current->position.y][current->position.x + 1].position = current->position;
-			}
-		}*/
 	}
 
 	Vector2D currentPos = *goal;

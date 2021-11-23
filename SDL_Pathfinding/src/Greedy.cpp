@@ -50,43 +50,6 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 				}
 			}
 		}
-
-		/*if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)) && came_from[current->position.y + 1][current->position.x].position == NULL)
-		{
-			float new_cost = Heuristic(goal, new Vector2D(current->position.x, current->position.y + 1));
-
-			Node* node = new Node(Vector2D(current->position.x, current->position.y + 1), new_cost);
-			frontier.push(node);
-
-			came_from[current->position.y + 1][current->position.x].position = current->position;
-		}
-		if (graph->isValidCell(Vector2D(current->position.x - 1, current->position.y)) && came_from[current->position.y][current->position.x - 1].position == NULL)
-		{
-			float new_cost = Heuristic(goal, new Vector2D(current->position.x - 1, current->position.y));
-
-			Node* node = new Node(Vector2D(current->position.x - 1, current->position.y), new_cost);
-			frontier.push(node);
-
-			came_from[current->position.y][current->position.x - 1].position = current->position;
-		}
-		if (graph->isValidCell(Vector2D(current->position.x, current->position.y - 1)) && came_from[current->position.y - 1][current->position.x].position == NULL)
-		{
-			float new_cost = Heuristic(goal, new Vector2D(current->position.x, current->position.y - 1));
-
-			Node* node = new Node(Vector2D(current->position.x, current->position.y - 1), new_cost);
-			frontier.push(node);
-
-			came_from[current->position.y - 1][current->position.x].position = current->position;
-		}
-		if (graph->isValidCell(Vector2D(current->position.x + 1, current->position.y)) && came_from[current->position.y][current->position.x + 1].position == NULL)
-		{
-			float new_cost = Heuristic(goal, new Vector2D(current->position.x + 1, current->position.y));
-
-			Node* node = new Node(Vector2D(current->position.x + 1, current->position.y), new_cost);
-			frontier.push(node);
-
-			came_from[current->position.y][current->position.x + 1].position = current->position;
-		}*/
 	}
 
 	Vector2D currentPos = *goal;
