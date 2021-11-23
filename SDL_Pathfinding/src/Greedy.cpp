@@ -3,7 +3,10 @@
 
 float Greedy::Heuristic(Vector2D* goal, Vector2D* current)
 {
-	return sqrt(pow(current->x - goal->x, 2) + pow(current->y - goal->y, 2));
+	float dx = abs(goal->x - current->x);
+	float dy = abs(goal->y - current->y);
+
+	return dx + dy;
 }
 
 std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
@@ -30,7 +33,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 		if (current->position == *goal)
 			break;
 
-		/*for (size_t i = 0; i < current->GetNeighbourCount(); i++)
+		for (size_t i = 0; i < current->GetNeighbourCount(); i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
 			if (graph->isValidCell(neighbour) && came_from[neighbour.y][neighbour.x].position == NULL)
@@ -42,9 +45,10 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 
 				came_from[neighbour.y][neighbour.x].position = current->position;
 			}
-		}*/
+		}
 
-		if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)) && came_from[current->position.y + 1][current->position.x].position == NULL)
+		delete current;
+		/*if (graph->isValidCell(Vector2D(current->position.x, current->position.y + 1)) && came_from[current->position.y + 1][current->position.x].position == NULL)
 		{
 			float new_cost = Heuristic(goal, new Vector2D(current->position.x, current->position.y + 1));
 
@@ -79,7 +83,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 			frontier.push(node);
 
 			came_from[current->position.y][current->position.x + 1].position = current->position;
-		}
+		}*/
 	}
 
 	Vector2D currentPos = *goal;
@@ -87,8 +91,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 	path.push(current);
 	while (currentPos != *position)
 	{
-		Node* node = new Node(came_from[currentPos.y][currentPos.x].position);
-		path.push(node);
+		path.push(new Node(currentPos));
 		currentPos = came_from[currentPos.y][currentPos.x].position;
 	}
 	return path;

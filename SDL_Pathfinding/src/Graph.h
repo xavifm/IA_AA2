@@ -12,8 +12,8 @@ public:
 	float weight;
 
 	Node() : position(NULL), weight(0) {};
-	Node(Vector2D position);
-	Node(Vector2D position, float weight);
+	Node(Vector2D _position);
+	Node(Vector2D _position, float _weight);
 
 	int GetNeighbourCount() { return neighbours.size(); }
 	Vector2D GetNeighbour(int i) { return neighbours[i]; }

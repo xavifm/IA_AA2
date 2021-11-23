@@ -64,7 +64,9 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 				std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
 				while (!pathfinding.empty())
 				{
-					agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+					Node* n = pathfinding.top();
+					agents[0]->addPathPoint(maze->cell2pix(n->position));
+					delete n;
 					pathfinding.pop();
 				}
 			}
