@@ -14,7 +14,8 @@ int main(int argc, char ** argv)
 	
 	SDL_SimpleApp *app = SDL_SimpleApp::Instance();
 
-	Scene *curr_scene = new ScenePathFindingMouse;
+	Scene *curr_scene = new ScenePathFindingMouse(ScenePathFindingMouse::PathFindingTypes::BREADTH_FIRST_SEARCH);
+	std::cout << "BREADTH FIRST SEARCH" << std::endl;
 	app->setWindowTitle(curr_scene->getTitle());
 
 	
@@ -34,15 +35,43 @@ int main(int argc, char ** argv)
 		case SDL_KEYDOWN:
 			if (event.key.keysym.scancode == SDL_SCANCODE_1)
 			{
+				system("cls");
+				std::cout << "BREADTH FIRST SEARCH" << std::endl;
+				ScenePathFindingMouse::PathFindingTypes type = ScenePathFindingMouse::PathFindingTypes::BREADTH_FIRST_SEARCH;
+
 				delete(curr_scene);
-				curr_scene = new ScenePathFindingMouse;
+				curr_scene = new ScenePathFindingMouse(type);
 				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if (event.key.keysym.scancode == SDL_SCANCODE_2)
 			{
+				system("cls");
+				std::cout << "DIJKSTRA" << std::endl;
+				ScenePathFindingMouse::PathFindingTypes type = ScenePathFindingMouse::PathFindingTypes::DIJKSTRA;
+				
+				delete(curr_scene);
+				curr_scene = new ScenePathFindingMouse(type);
+				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if (event.key.keysym.scancode == SDL_SCANCODE_3)
 			{
+				system("cls");
+				std::cout << "GREEDY" << std::endl;
+				ScenePathFindingMouse::PathFindingTypes type = ScenePathFindingMouse::PathFindingTypes::GREEDY;
+				
+				delete(curr_scene);
+				curr_scene = new ScenePathFindingMouse(type);
+				app->setWindowTitle(curr_scene->getTitle());
+			}
+			if (event.key.keysym.scancode == SDL_SCANCODE_4)
+			{
+				system("cls");
+				std::cout << "A*" << std::endl;
+				ScenePathFindingMouse::PathFindingTypes type = ScenePathFindingMouse::PathFindingTypes::A_ESTRELLA;
+				
+				delete(curr_scene);
+				curr_scene = new ScenePathFindingMouse(type);
+				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if ((event.key.keysym.scancode == SDL_SCANCODE_Q) || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
 			{

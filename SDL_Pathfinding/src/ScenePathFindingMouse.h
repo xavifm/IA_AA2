@@ -18,17 +18,23 @@
 class ScenePathFindingMouse :
 	public Scene
 {
+	
 public:
-	ScenePathFindingMouse();
+	enum class PathFindingTypes { DIJKSTRA, A_ESTRELLA, GREEDY, BREADTH_FIRST_SEARCH};
+	ScenePathFindingMouse() {}
+	ScenePathFindingMouse(PathFindingTypes);
 	~ScenePathFindingMouse();
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	const char* getTitle();
+	void ChangeType(PathFindingTypes);
+	
 private:
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;
 
 	PathfindingAlgorythm* pathFinder;
+	PathFindingTypes pathType;
 
 	Grid *maze;
 	bool draw_grid;

@@ -4,6 +4,8 @@
 #include <string>
 #include <SDL.h>
 
+enum class PathFindingTypes { DIJKSTRA, A_ESTRELLA, GREEDY, BREADTH_FIRST_SEARCH };
+
 /* Get the resource path for resources located in res/subDir */
 std::string getResourcePath(const std::string &subDir = "") {
 	//We need to choose the path separator properly based on which

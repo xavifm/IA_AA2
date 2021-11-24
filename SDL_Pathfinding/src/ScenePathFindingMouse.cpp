@@ -2,7 +2,7 @@
 
 using namespace std;
 
-ScenePathFindingMouse::ScenePathFindingMouse()
+ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 {
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
@@ -10,6 +10,8 @@ ScenePathFindingMouse::ScenePathFindingMouse()
 	loadTextures("../res/maze.png", "../res/coin.png");
 
 	srand((unsigned int)time(NULL));
+
+	pathType = type;
 
 	Agent *agent = new Agent;
 	agent->loadSpriteTexture("../res/soldier.png", 4);
@@ -51,6 +53,8 @@ ScenePathFindingMouse::~ScenePathFindingMouse()
 	{
 		delete agents[i];
 	}
+
+	delete maze;
 }
 
 void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
@@ -60,6 +64,22 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
+		break;
+		if(event->key.keysym.scancode == SDL_SCANCODE_2)
+			if(pathType!=PathFindingTypes::BREADTH_FIRST_SEARCH)
+				ChangeType(PathFindingTypes::BREADTH_FIRST_SEARCH);
+		break;
+		if (event->key.keysym.scancode == SDL_SCANCODE_3)
+			if (pathType != PathFindingTypes::DIJKSTRA)
+				ChangeType(PathFindingTypes::DIJKSTRA);
+		break;		
+		if (event->key.keysym.scancode == SDL_SCANCODE_2)
+			if (pathType != PathFindingTypes::GREEDY)
+				ChangeType(PathFindingTypes::GREEDY);
+		break;
+		if (event->key.keysym.scancode == SDL_SCANCODE_4)
+			if (pathType != PathFindingTypes::A_ESTRELLA)
+				ChangeType(PathFindingTypes::A_ESTRELLA);
 		break;
 	default:
 		break;
@@ -80,6 +100,26 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 		}
 	}
 	
+}
+
+void ScenePathFindingMouse::ChangeType(PathFindingTypes)
+{
+	delete pathFinder;
+	switch (pathType)
+	{
+	case PathFindingTypes::DIJKSTRA:
+		pathFinder = new Dijkstra();
+		break;
+	case PathFindingTypes::A_ESTRELLA:
+		pathFinder = new A_Estrella();
+		break;
+	case PathFindingTypes::GREEDY:
+		pathFinder = new Greedy();
+		break;
+	case PathFindingTypes::BREADTH_FIRST_SEARCH:
+		pathFinder = new BFS();
+		break;
+	}
 }
 
 void ScenePathFindingMouse::calculateNewPath()
