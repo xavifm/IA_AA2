@@ -1,4 +1,5 @@
 #include "BFS.h"
+#include <iostream>
 
 std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
 {
@@ -17,6 +18,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Grid* g
 	came_from[position->y][position->x].position = NULL;
 	came_from[position->y][position->x].weight = 0;
 	Node* current;
+	int count = 0;
 
 	while (!frontier.empty())
 	{
@@ -24,7 +26,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Grid* g
 		frontier.pop();
 		if (current->position == *goal)
 			break;
-
+		count++;
 		for (size_t i = 0; i < current->GetNeighbourCount(); i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
@@ -39,6 +41,8 @@ std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Grid* g
 			}
 		}
 	}
+
+	std::cout << count << std::endl;
 
 	Vector2D currentPos = *goal;
 	std::stack<Node*> path;

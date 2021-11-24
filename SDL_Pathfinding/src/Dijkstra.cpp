@@ -1,4 +1,5 @@
 #include "Dijkstra.h"
+#include <iostream>
 
 std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
 {
@@ -18,6 +19,8 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 	came_from[position->y][position->x].weight = 0;
 	Node* current;
 
+	int counter = 0;
+
 	while (!frontier.empty())
 	{
 		current = frontier.top();
@@ -25,7 +28,7 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 		frontier.pop();
 		if (current->position == *goal)
 			break;
-
+		counter++;
 		for (size_t i = 0; i < 4; i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
@@ -43,6 +46,8 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 			}
 		}
 	}
+
+	std::cout << counter << std::endl;
 
 	Vector2D currentPos = *goal;
 	std::stack<Node*> path;

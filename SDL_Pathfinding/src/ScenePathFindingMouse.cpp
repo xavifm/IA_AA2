@@ -19,6 +19,7 @@ ScenePathFindingMouse::ScenePathFindingMouse()
 
 	// set agent position coords to the center of a random cell
 	Vector2D rand_cell(-1,-1);
+	srand(1);
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
@@ -27,7 +28,16 @@ ScenePathFindingMouse::ScenePathFindingMouse()
 	coinPosition = Vector2D(-1,-1);
 	while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3))
 		coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+	calculateNewPath();
 
+	for (size_t i = 0; i < 20; i++)
+	{
+		coinLocations[i] = coinPosition;
+		coinPosition = Vector2D(-1, -1);
+		while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell) < 3))
+			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+	}
+	coinPosition = coinLocations[0];
 }
 
 ScenePathFindingMouse::~ScenePathFindingMouse()
@@ -51,25 +61,6 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
 		break;
-	case SDL_MOUSEMOTION:
-	case SDL_MOUSEBUTTONDOWN:
-		if (event->button.button == SDL_BUTTON_LEFT)
-		{
-			Vector2D cell = maze->pix2cell(Vector2D((float)(event->button.x), (float)(event->button.y)));
-			if (maze->isValidCell(cell))
-			{
-				if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
-				Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-				pathFinder = new A_Estrella();
-				std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
-				while (!pathfinding.empty())
-				{
-					agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
-					pathfinding.pop();
-				}
-			}
-		}
-		break;
 	default:
 		break;
 	}
@@ -80,10 +71,32 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	if ((agents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[0]->getPosition()) == coinPosition))
 	{
 		coinPosition = Vector2D(-1, -1);
-		while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, maze->pix2cell(agents[0]->getPosition()))<3))
-			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+
+		if(index < 20) 
+		{
+			coinPosition = coinLocations[index];
+			calculateNewPath();
+			index++;
+		}
 	}
 	
+}
+
+void ScenePathFindingMouse::calculateNewPath()
+{
+	Vector2D cell = coinPosition;
+	if (maze->isValidCell(cell))
+	{
+		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
+		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
+		pathFinder = new A_Estrella();
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+		while (!pathfinding.empty())
+		{
+			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			pathfinding.pop();
+		}
+	}
 }
 
 void ScenePathFindingMouse::draw()

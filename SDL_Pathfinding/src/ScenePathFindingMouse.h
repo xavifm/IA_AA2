@@ -32,7 +32,12 @@ private:
 
 	Grid *maze;
 	bool draw_grid;
-		
+
+	Vector2D coinLocations[20];
+
+	int index = 0;
+	
+	void calculateNewPath();
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;

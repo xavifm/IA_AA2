@@ -1,5 +1,6 @@
 #include "Greedy.h"
 #include <math.h>
+#include <iostream>
 
 float Greedy::Heuristic(Vector2D* goal, Vector2D* current)
 {
@@ -25,6 +26,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 	came_from[position->y][position->x].position = NULL;
 	came_from[position->y][position->x].weight = 0;
 	Node* current;
+	int count = 0;
 
 	while (!frontier.empty())
 	{
@@ -33,7 +35,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 		frontier.pop();
 		if (current->position == *goal)
 			break;
-
+		count++;
 		for (size_t i = 0; i < current->GetNeighbourCount(); i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
@@ -51,6 +53,8 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 			}
 		}
 	}
+
+	std::cout << count << std::endl;
 
 	Vector2D currentPos = *goal;
 	std::stack<Node*> path;

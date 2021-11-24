@@ -1,4 +1,5 @@
 #include "A_Estrella.h"
+#include <iostream>
 
 float A_Estrella::Heuristic(Vector2D* goal, Vector2D* current)
 {
@@ -24,7 +25,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 	came_from[position->y][position->x].position = NULL;
 	came_from[position->y][position->x].weight = 0;
 	Node* current;
-
+	int counter = 0;
 	while (!frontier.empty())
 	{
 		current = frontier.top();
@@ -32,7 +33,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 		frontier.pop();
 		if (current->position == *goal)
 			break;
-
+		counter++;
 		for (size_t i = 0; i < 4; i++)
 		{
 			Vector2D neighbour = current->GetNeighbour(i);
@@ -51,6 +52,8 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 			}
 		}
 	}
+
+	std::cout << counter << std::endl;
 
 	Vector2D currentPos = *goal;
 	std::stack<Node*> path;
