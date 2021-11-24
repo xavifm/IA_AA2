@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Agent.cpp" />
+    <ClCompile Include="..\src\A_Estrella.cpp" />
     <ClCompile Include="..\src\BFS.cpp" />
     <ClCompile Include="..\src\Dijkstra.cpp" />
     <ClCompile Include="..\src\Graph.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Agent.h" />
+    <ClInclude Include="..\src\A_Estrella.h" />
     <ClInclude Include="..\src\BFS.h" />
     <ClInclude Include="..\src\Dijkstra.h" />
     <ClInclude Include="..\src\Graph.h" />

@@ -60,7 +60,7 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 			{
 				if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 				Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-				pathFinder = new BFS();
+				pathFinder = new A_Estrella();
 				std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
 				while (!pathfinding.empty())
 				{
