@@ -25,3 +25,8 @@ public:
 	inline bool operator<=(const Node& n) const { return (weight <= n.weight); }
 	inline bool operator<(const Node& n) const { return (weight < n.weight); }
 };
+
+class Graph
+{
+
+};
