@@ -135,6 +135,7 @@
     <ClCompile Include="..\src\A_Estrella.cpp" />
     <ClCompile Include="..\src\BFS.cpp" />
     <ClCompile Include="..\src\Dijkstra.cpp" />
+    <ClCompile Include="..\src\DynamicScenePathFinding.cpp" />
     <ClCompile Include="..\src\Graph.cpp" />
     <ClCompile Include="..\src\Greedy.cpp" />
     <ClCompile Include="..\src\Grid.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\src\A_Estrella.h" />
     <ClInclude Include="..\src\BFS.h" />
     <ClInclude Include="..\src\Dijkstra.h" />
+    <ClInclude Include="..\src\DynamicScenePathFinding.h" />
     <ClInclude Include="..\src\Graph.h" />
     <ClInclude Include="..\src\Greedy.h" />
     <ClInclude Include="..\src\Grid.h" />

@@ -1,30 +1,9 @@
-#include "ScenePathFindingMouse.h"
+#include "DynamicScenePathFinding.h"
 
 using namespace std;
 
-void ScenePathFindingMouse::ChangeType(PathFindingTypes type)
+DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 {
-	delete pathFinder;
-	switch (type)
-	{
-	case PathFindingTypes::DIJKSTRA:
-		pathFinder = new Dijkstra();
-		break;
-	case PathFindingTypes::A_ESTRELLA:
-		pathFinder = new A_Estrella();
-		break;
-	case PathFindingTypes::GREEDY:
-		pathFinder = new Greedy();
-		break;
-	case PathFindingTypes::BREADTH_FIRST_SEARCH:
-		pathFinder = new BFS();
-		break;
-	}
-}
-
-ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
-{
-	ChangeType(type);
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
@@ -38,14 +17,22 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
+
+	Agent* agent2 = new Agent;
+	agent2->loadSpriteTexture("../res/soldier.png", 4);
+	agent2->setBehavior(new PathFollowing);
+	agent2->setTarget(Vector2D(-20, -20));
+
 	agents.push_back(agent);
+	agents.push_back(agent2);
 
 	// set agent position coords to the center of a random cell
-	Vector2D rand_cell(-1,-1);
+	Vector2D rand_cell(817.77f, 563.64f);
 	srand(1);
-	while (!maze->isValidCell(rand_cell))
-		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
-	agents[0]->setPosition(maze->cell2pix(rand_cell));
+	agents[0]->setPosition(rand_cell);
+
+	rand_cell = Vector2D(800.266f, 48.1198f);
+	agents[1]->setPosition(rand_cell);
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1,-1);
@@ -63,7 +50,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	coinPosition = coinLocations[0];
 }
 
-ScenePathFindingMouse::~ScenePathFindingMouse()
+DynamicScenePathFinding::~DynamicScenePathFinding()
 {
 	if (background_texture)
 		SDL_DestroyTexture(background_texture);
@@ -78,68 +65,97 @@ ScenePathFindingMouse::~ScenePathFindingMouse()
 	delete maze;
 }
 
-void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
+void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 {
 	/* Keyboard & Mouse events */
-	/*switch (event->type) {
+	switch (event->type) {
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
 		break;
-		if(event->key.keysym.scancode == SDL_SCANCODE_2)
-			if(pathType!=PathFindingTypes::BREADTH_FIRST_SEARCH)
-				ChangeType(PathFindingTypes::BREADTH_FIRST_SEARCH);
-		break;
-		if (event->key.keysym.scancode == SDL_SCANCODE_3)
-			if (pathType != PathFindingTypes::DIJKSTRA)
-				ChangeType(PathFindingTypes::DIJKSTRA);
-		break;		
-		if (event->key.keysym.scancode == SDL_SCANCODE_2)
-			if (pathType != PathFindingTypes::GREEDY)
-				ChangeType(PathFindingTypes::GREEDY);
-		break;
-		if (event->key.keysym.scancode == SDL_SCANCODE_4)
-			if (pathType != PathFindingTypes::A_ESTRELLA)
-				ChangeType(PathFindingTypes::A_ESTRELLA);
-		break;
 	default:
 		break;
-	}*/
+	}
 
 	agents[0]->update(dtime, event);
+	agents[1]->update(dtime, event);
 
 	// if we have arrived to the coin, replace it in a random cell!
-	if ((agents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[0]->getPosition()) == coinPosition))
-	{
-		coinPosition = Vector2D(-1, -1);
 
-		if(index < 20) 
+	for (int i = 0; i < 2; i++)
+	{
+		for (size_t o = 0; o < agents[i]->getPathSize(); o++)
 		{
-			coinPosition = coinLocations[index];
-			calculateNewPath();
-			index++;
+			size_t i2 = 0;
+			if (i == 0)
+				i2 = 1;
+
+			for (size_t l = 0; l < agents[i2]->getPathSize(); l++)
+			{
+				if (agents[i]->getPathPoint(o) == agents[i2]->getPathPoint(l))
+				calculateNewPathSeparate(i2, false);
+			}
 		}
 	}
-	
+
+	for (size_t i = 0; i < 2; i++)
+	{
+		if ((agents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[i]->getPosition()) == coinPosition))
+		{
+			coinPosition = Vector2D(-1, -1);
+
+			if (index < 20)
+			{
+				coinPosition = coinLocations[index];
+				calculateNewPath();
+				index++;
+			}
+		}
+		else if(agents[i]->getPathSize() <= 0)
+			calculateNewPathSeparate(i, true);
+	}
 }
 
-void ScenePathFindingMouse::calculateNewPath()
+void DynamicScenePathFinding::calculateNewPath()
 {
 	Vector2D cell = coinPosition;
+	for (size_t i = 0; i < 2; i++)
+	{
+		if (maze->isValidCell(cell))
+		{
+			if (agents[i]->getPathSize() != 0) { agents[i]->clearPath(); }
+			Vector2D pos = maze->pix2cell(agents[i]->getPosition());
+			pathFinder = new A_Estrella();
+			std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+			while (!pathfinding.empty())
+			{
+				agents[i]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+				pathfinding.pop();
+			}
+		}
+	}
+}
+
+void DynamicScenePathFinding::calculateNewPathSeparate(int pos, bool searchCoin)
+{
+	Vector2D cell = coinPosition;
+	if(!searchCoin)
+	cell = coinPosition + Vector2D((float)(rand() % 5 - 5), (float)(rand() % 5 - 5));
 	if (maze->isValidCell(cell))
 	{
-		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
-		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+		if (agents[pos]->getPathSize() != 0) { agents[pos]->clearPath(); }
+		Vector2D pos2 = maze->pix2cell(agents[pos]->getPosition());
+		pathFinder = new A_Estrella();
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, maze);
 		while (!pathfinding.empty())
 		{
-			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			agents[pos]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
 			pathfinding.pop();
 		}
 	}
 }
 
-void ScenePathFindingMouse::draw()
+void DynamicScenePathFinding::draw()
 {
 	drawMaze();
 	drawCoin();
@@ -158,14 +174,15 @@ void ScenePathFindingMouse::draw()
 	}
 
 	agents[0]->draw();
+	agents[1]->draw();
 }
 
-const char* ScenePathFindingMouse::getTitle()
+const char* DynamicScenePathFinding::getTitle()
 {
 	return "SDL Path Finding :: PathFinding Mouse Demo";
 }
 
-void ScenePathFindingMouse::drawMaze()
+void DynamicScenePathFinding::drawMaze()
 {
 	SDL_SetRenderDrawColor(TheApp::Instance()->getRenderer(), 0, 0, 255, 255);
 	SDL_Rect rect;
@@ -191,7 +208,7 @@ void ScenePathFindingMouse::drawMaze()
 	//SDL_RenderCopy(TheApp::Instance()->getRenderer(), background_texture, NULL, NULL );
 }
 
-void ScenePathFindingMouse::drawCoin()
+void DynamicScenePathFinding::drawCoin()
 {
 	Vector2D coin_coords = maze->cell2pix(coinPosition);
 	int offset = CELL_SIZE / 2;
@@ -200,7 +217,7 @@ void ScenePathFindingMouse::drawCoin()
 }
 
 
-bool ScenePathFindingMouse::loadTextures(char* filename_bg, char* filename_coin)
+bool DynamicScenePathFinding::loadTextures(char* filename_bg, char* filename_coin)
 {
 	SDL_Surface *image = IMG_Load(filename_bg);
 	if (!image) {

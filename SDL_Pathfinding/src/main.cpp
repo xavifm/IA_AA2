@@ -4,6 +4,7 @@
 
 #include "SDL_SimpleApp.h"
 #include "ScenePathFindingMouse.h"
+#include "DynamicScenePathFinding.h"
 
 using namespace std;
 
@@ -71,6 +72,16 @@ int main(int argc, char ** argv)
 				
 				delete(curr_scene);
 				curr_scene = new ScenePathFindingMouse(type);
+				app->setWindowTitle(curr_scene->getTitle());
+			}
+			if (event.key.keysym.scancode == SDL_SCANCODE_5)
+			{
+				system("cls");
+				std::cout << "D*" << std::endl;
+				DynamicScenePathFinding::PathFindingTypes type = DynamicScenePathFinding::PathFindingTypes::A_ESTRELLA;
+
+				delete(curr_scene);
+				curr_scene = new DynamicScenePathFinding(type);
 				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if ((event.key.keysym.scancode == SDL_SCANCODE_Q) || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))
