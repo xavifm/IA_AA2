@@ -10,6 +10,6 @@ class A_Estrella:public PathfindingAlgorythm
 {
 	float Heuristic(Vector2D* goal, Vector2D* current);
 public:
-	std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Grid* graph);
+	std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Graph* graph);
 };
 

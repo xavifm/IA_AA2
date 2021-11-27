@@ -36,6 +36,7 @@ private:
 	PathfindingAlgorythm* pathFinder;
 	PathFindingTypes pathType;
 
+	Graph* graph;
 	Grid *maze;
 	bool draw_grid;
 

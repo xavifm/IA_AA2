@@ -4,12 +4,16 @@ using namespace std;
 
 ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 {
+	ChangeType(type);
+
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
 	loadTextures("../res/maze.png", "../res/coin.png");
 
 	srand((unsigned int)time(NULL));
+
+	graph = new Graph(maze);
 
 	pathType = type;
 
@@ -30,6 +34,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	coinPosition = Vector2D(-1,-1);
 	while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3))
 		coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+	
 	calculateNewPath();
 
 	for (size_t i = 0; i < 20; i++)
@@ -102,10 +107,10 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	
 }
 
-void ScenePathFindingMouse::ChangeType(PathFindingTypes)
+void ScenePathFindingMouse::ChangeType(PathFindingTypes type)
 {
 	delete pathFinder;
-	switch (pathType)
+	switch (type)
 	{
 	case PathFindingTypes::DIJKSTRA:
 		pathFinder = new Dijkstra();
@@ -129,11 +134,10 @@ void ScenePathFindingMouse::calculateNewPath()
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		pathFinder = new A_Estrella();
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, graph);
 		while (!pathfinding.empty())
 		{
-			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			agents[0]->addPathPoint(maze->cell2pix(*pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}

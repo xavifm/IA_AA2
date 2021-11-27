@@ -10,5 +10,5 @@
 class BFS : public PathfindingAlgorythm
 {
 	public:
-		std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Grid* graph);
+		std::stack<Node*> calculatePath(Vector2D* position, Vector2D* goal, Graph* graph);
 };

@@ -1,32 +1,21 @@
 #pragma once
+#include "Node.h"
+#include "Grid.h"
 #include "Vector2D.h"
 #include <vector>
 
-class Node
-{
-	std::vector<Vector2D> neighbours;
-
-	void CalculateNeighbours();
-public:
-	Vector2D position;
-	float weight;
-
-	Node() : position(NULL), weight(0) {};
-	Node(Vector2D position);
-	Node(Vector2D position, float weight);
-
-	int GetNeighbourCount() { return neighbours.size(); }
-	Vector2D GetNeighbour(int i) { return neighbours[i]; }
-
-	inline bool operator==(const Node& n) const { return (position.x == n.position.x) && (position.y == n.position.y); }
-	inline bool operator!=(const Node& n) const { return (position.x != n.position.x) || (position.y != n.position.y); }
-	inline bool operator>=(const Node& n) const { return (weight >= n.weight); }
-	inline bool operator>(const Node& n) const { return (weight > n.weight); }
-	inline bool operator<=(const Node& n) const { return (weight <= n.weight); }
-	inline bool operator<(const Node& n) const { return (weight < n.weight); }
-};
-
 class Graph
 {
+	Vector2D mapSize;
+	std::vector<Node> graph;
+
+public:
+	Graph() {}
+	Graph(Grid*);
+
+	Vector2D* GetGraphSize() { return &mapSize; }
+	Node* GetNode(Vector2D);
+	std::vector<Node*>* GetNeighbours(Node*);
+
 
 };
