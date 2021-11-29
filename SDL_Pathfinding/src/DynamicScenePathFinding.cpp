@@ -92,7 +92,7 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 
 			for (size_t l = 0; l < agents[i2]->getPathSize(); l++)
 			{
-				if (agents[i]->getPathPoint(o) == agents[i2]->getPathPoint(l) && agents[i]->getPathPoint(o) != coinPosition)
+				if (Vector2D::Distance(agents[i]->getPosition(), agents[i2]->getPosition()) < 100 && agents[i]->getPathPoint(o) == agents[i2]->getPathPoint(l) && agents[i]->getPathPoint(o) != coinPosition)
 				calculateNewPathSeparate(i2, false);
 			}
 		}
@@ -136,15 +136,21 @@ void DynamicScenePathFinding::calculateNewPath()
 	}
 }
 
-void DynamicScenePathFinding::calculateNewPathSeparate(int pos, bool searchCoin)
+void DynamicScenePathFinding::calculateNewPathSeparate(int pos, bool avoidRandomizeStartPoint)
 {
+	int otherPos = 1;
+	if (pos == 1)
+		otherPos = 0;
+
 	Vector2D cell = coinPosition;
-	if(!searchCoin)
-	cell = coinPosition + Vector2D((float)(rand() % 5 - 5), (float)(rand() % 5 - 5));
-	if (maze->isValidCell(cell))
+	Vector2D random;
+	if(!avoidRandomizeStartPoint)
+		random = Vector2D((float)(rand() % 1 - 1), (float)(rand() % 1 - 1));
+	std::cout << "Distance: " << Vector2D::Distance(maze->pix2cell(agents[pos]->getPosition()) + random, maze->pix2cell(agents[otherPos]->getPosition())) << std::endl;
+	if (maze->isValidCell(cell) && maze->isValidCell(maze->pix2cell(agents[pos]->getPosition()) + random) && Vector2D::Distance(maze->pix2cell(agents[pos]->getPosition()) + random, maze->pix2cell(agents[otherPos]->getPosition())) > 2)
 	{
 		if (agents[pos]->getPathSize() != 0) { agents[pos]->clearPath(); }
-		Vector2D pos2 = maze->pix2cell(agents[pos]->getPosition());
+		Vector2D pos2 = maze->pix2cell(agents[pos]->getPosition()) + random;
 		pathFinder = new A_Estrella();
 		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, maze);
 		while (!pathfinding.empty())
