@@ -92,7 +92,7 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 
 			for (size_t l = 0; l < agents[i2]->getPathSize(); l++)
 			{
-				if (agents[i]->getPathPoint(o) == agents[i2]->getPathPoint(l))
+				if (agents[i]->getPathPoint(o) == agents[i2]->getPathPoint(l) && agents[i]->getPathPoint(o) != coinPosition)
 				calculateNewPathSeparate(i2, false);
 			}
 		}
