@@ -13,6 +13,7 @@
 #include "BFS.h"
 #include "Greedy.h"
 #include "A_Estrella.h"
+#include "Blackboard.h"
 
 
 class DynamicScenePathFinding :
@@ -21,7 +22,7 @@ class DynamicScenePathFinding :
 	
 public:
 	enum class PathFindingTypes { DIJKSTRA, A_ESTRELLA, GREEDY, BREADTH_FIRST_SEARCH};
-	DynamicScenePathFinding() {}
+	DynamicScenePathFinding() {};
 	DynamicScenePathFinding(PathFindingTypes);
 	~DynamicScenePathFinding();
 	void update(float dtime, SDL_Event *event);

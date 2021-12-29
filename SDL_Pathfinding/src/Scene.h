@@ -6,7 +6,7 @@
 class Scene
 {
 public:
-	Scene() {};
+	Scene() = default;
 	virtual ~Scene() {};
 	virtual void update(float dtime, SDL_Event *event) = 0;
 	virtual void draw() = 0;

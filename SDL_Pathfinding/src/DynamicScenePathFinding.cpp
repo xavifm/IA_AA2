@@ -4,6 +4,8 @@ using namespace std;
 
 DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 {
+	Blackboard blackboard = Blackboard();
+
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
@@ -13,12 +15,12 @@ DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent;
+	Agent *agent = new Agent(&blackboard, this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 
-	Agent* agent2 = new Agent;
+	Agent* agent2 = new Agent(&blackboard, this);
 	agent2->loadSpriteTexture("../res/soldier.png", 4);
 	agent2->setBehavior(new PathFollowing);
 	agent2->setTarget(Vector2D(-20, -20));

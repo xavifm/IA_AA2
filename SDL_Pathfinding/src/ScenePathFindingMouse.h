@@ -13,6 +13,7 @@
 #include "BFS.h"
 #include "Greedy.h"
 #include "A_Estrella.h"
+#include "Blackboard.h"
 
 
 class ScenePathFindingMouse :

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Agent::Agent() : sprite_texture(0),
+Agent::Agent(Blackboard* _blackBoard, Scene* world) : sprite_texture(0),
                  position(Vector2D(100, 100)),
 	             target(Vector2D(1000, 100)),
 	             velocity(Vector2D(0,0)),
@@ -16,6 +16,8 @@ Agent::Agent() : sprite_texture(0),
 	             sprite_h(0),
 	             draw_sprite(false)
 {
+	sensors = new SensorySystem(world);
+	blackBoard = _blackBoard;
 }
 
 Agent::~Agent()

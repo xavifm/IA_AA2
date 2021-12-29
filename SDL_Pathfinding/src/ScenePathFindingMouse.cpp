@@ -24,6 +24,8 @@ void ScenePathFindingMouse::ChangeType(PathFindingTypes type)
 
 ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 {
+	Blackboard blackboard = Blackboard();
+
 	ChangeType(type);
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
@@ -34,7 +36,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent;
+	Agent *agent = new Agent(&blackboard, this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));

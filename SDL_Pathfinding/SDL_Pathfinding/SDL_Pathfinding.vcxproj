@@ -134,6 +134,7 @@
     <ClCompile Include="..\src\Agent.cpp" />
     <ClCompile Include="..\src\A_Estrella.cpp" />
     <ClCompile Include="..\src\BFS.cpp" />
+    <ClCompile Include="..\src\Blackboard.cpp" />
     <ClCompile Include="..\src\Dijkstra.cpp" />
     <ClCompile Include="..\src\DynamicScenePathFinding.cpp" />
     <ClCompile Include="..\src\Graph.cpp" />
@@ -144,12 +145,14 @@
     <ClCompile Include="..\src\ScenePathFindingMouse.cpp" />
     <ClCompile Include="..\src\SDL_SimpleApp.cpp" />
     <ClCompile Include="..\src\Seek.cpp" />
+    <ClCompile Include="..\src\SensorySystem.cpp" />
     <ClCompile Include="..\src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Agent.h" />
     <ClInclude Include="..\src\A_Estrella.h" />
     <ClInclude Include="..\src\BFS.h" />
+    <ClInclude Include="..\src\Blackboard.h" />
     <ClInclude Include="..\src\Dijkstra.h" />
     <ClInclude Include="..\src\DynamicScenePathFinding.h" />
     <ClInclude Include="..\src\Graph.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="..\src\PathFollowing.h" />
     <ClInclude Include="..\src\ScenePathFindingMouse.h" />
     <ClInclude Include="..\src\Seek.h" />
+    <ClInclude Include="..\src\SensorySystem.h" />
     <ClInclude Include="..\src\utils.h" />
     <ClInclude Include="..\src\Scene.h" />
     <ClInclude Include="..\src\SDL_SimpleApp.h" />
