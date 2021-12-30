@@ -31,6 +31,7 @@ public:
 	void ChangeType(PathFindingTypes);
 	
 private:
+	Graph* graph;
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;
 

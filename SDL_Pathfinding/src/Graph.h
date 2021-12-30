@@ -5,35 +5,41 @@
 
 class Node
 {
-	Vector2D position;
+    Vector2D position;
 
 public:
-	Node() : position(NULL) {};
-	Node(Vector2D position) : position(position) {};
+    Node() : position(NULL) {};
+    Node(Vector2D position) : position(position) {};
 
-	Vector2D GetPosition() { return position; }
-	bool ComparePosition(Vector2D pos);
+    Vector2D GetPosition() { return position; }
+    void SetPosition(Vector2D pos) { position = pos; }
+    bool ComparePosition(Vector2D pos);
 
+    int weight;
 
-	inline bool operator==(const Node& n) const { return (position.x == n.position.x) && (position.y == n.position.y); }
-	inline bool operator!=(const Node& n) const { return (position.x != n.position.x) || (position.y != n.position.y); }
+    inline bool operator==(const Node& n) const { return (position.x == n.position.x) && (position.y == n.position.y); }
+    inline bool operator!=(const Node& n) const { return (position.x != n.position.x) || (position.y != n.position.y); }
 };
 
 class Connection
 {
-	Node* nodeFrom;
-	Node* nodeTo;
+    Node* nodeFrom;
+    Node* nodeTo;
 public:
-	float weight;
-	Node* GetNodeFrom() { return nodeFrom; };
-	Node* GetNodeTo() { return nodeTo; };
+    Connection(Node* _nodeFrom, Node* _nodeTo, float weight);
 
-	inline bool operator==(const Vector2D& npos) const;
+    float weight;
+    Node* GetNodeFrom() { return nodeFrom; };
+    Node* GetNodeTo() { return nodeTo; };
+
+    inline bool operator==(const Vector2D& npos) const;
 };
 
 class Graph
 {
 public:
-	Graph(Grid* grid);
-	std::vector<Connection*> connections;
+    Graph(Grid* grid);
+    std::vector<Connection*> connections;
+    int gridSizeX;
+    int gridSizeY;
 };

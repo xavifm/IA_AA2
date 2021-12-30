@@ -24,7 +24,7 @@ int Blackboard::GetInt(std::string key)
 	return *(int*)theBlackboard[key];
 }
 
-void Blackboard::SetVector2D(std::string key, Vector2D value)
+/*void Blackboard::SetVector2D(std::string key, Vector2D value)
 {
 	theBlackboard[key] = &value;
 }
@@ -36,10 +36,11 @@ Vector2D Blackboard::GetVector2D(std::string key)
 
 void Blackboard::SetGraphPtr(Graph* value)
 {
-	graph = value;
+	//graph = value;
 }
 
 Graph* Blackboard::GetGraphPtr()
 {
-	return graph;
-}
+	//return graph;
+	return nullptr;
+}*/

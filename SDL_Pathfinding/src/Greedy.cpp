@@ -9,48 +9,48 @@ float Greedy::Heuristic(Vector2D* goal, Vector2D* current)
 	return (dx + dy);
 }
 
-std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid* graph)
+std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Graph* graph)
 {
 	std::priority_queue<Node*, std::vector<Node*>, std::greater_equal<Node*>> frontier;
 	Node* firstNode = new Node(*position);
 
 	frontier.push(firstNode);
-	std::vector<std::vector<Node>> came_from(graph->getNumCellY());
+	std::vector<std::vector<Node>> came_from(graph->gridSizeY);
 
-	for (int i = 0; i < graph->getNumCellY(); i++)
+	for (int i = 0; i < graph->gridSizeY; i++)
 	{
-		std::vector<Node> temp(graph->getNumCellX());
+		std::vector<Node> temp(graph->gridSizeX);
 		came_from[i] = temp;
 	}
 
-	came_from[position->y][position->x].position = NULL;
+	came_from[position->y][position->x].GetPosition() = NULL;
 	came_from[position->y][position->x].weight = 0;
 	Node* current;
 	int count = 0;
+	int frontierPos = 0;
 
 	while (!frontier.empty())
 	{
 		current = frontier.top();
-		float new_cost = came_from[current->position.y][current->position.x].weight + 1;
+		float new_cost = came_from[current->GetPosition().y][current->GetPosition().x].weight + 1;
 		frontier.pop();
-		if (current->position == *goal)
+		if (current->GetPosition() == *goal)
 			break;
 		count++;
-		for (size_t i = 0; i < current->GetNeighbourCount(); i++)
+		for (size_t i = frontierPos; i < frontierPos + 4; i++)
 		{
-			Vector2D neighbour = current->GetNeighbour(i);
-			if (graph->isValidCell(neighbour))
+			Vector2D neighbour = graph->connections[i]->GetNodeTo()->GetPosition();
+			float hCost = new_cost + Heuristic(goal, &neighbour);
+			if ((came_from[neighbour.y][neighbour.x].GetPosition() == NULL || hCost < came_from[neighbour.y][neighbour.x].weight))
 			{
-				float hCost = new_cost + Heuristic(goal, &neighbour);
-				if ((came_from[neighbour.y][neighbour.x].position == NULL || hCost < came_from[neighbour.y][neighbour.x].weight))
-				{
-					Node* node = new Node(neighbour, hCost);
-					frontier.push(node);
+				Node* node = new Node(neighbour);
+				node->weight = hCost;
+				frontier.push(node);
 
-					came_from[neighbour.y][neighbour.x].position = current->position;
-					came_from[neighbour.y][neighbour.x].weight = hCost;
-				}
+				came_from[neighbour.y][neighbour.x].GetPosition() = current->GetPosition();
+				came_from[neighbour.y][neighbour.x].weight = hCost;
 			}
+			frontierPos++;
 		}
 	}
 
@@ -61,9 +61,9 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grid
 	path.push(current);
 	while (currentPos != *position)
 	{
-		Node* node = new Node(came_from[currentPos.y][currentPos.x].position);
+		Node* node = new Node(came_from[currentPos.y][currentPos.x].GetPosition());
 		path.push(node);
-		currentPos = came_from[currentPos.y][currentPos.x].position;
+		currentPos = came_from[currentPos.y][currentPos.x].GetPosition();
 	}
 	return path;
 }

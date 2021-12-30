@@ -36,7 +36,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent(&blackboard, this);
+	Agent *agent = new Agent(this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
@@ -128,14 +128,15 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 void ScenePathFindingMouse::calculateNewPath()
 {
 	Vector2D cell = coinPosition;
+	Graph* graph = new Graph(maze);
 	if (maze->isValidCell(cell))
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, graph);
 		while (!pathfinding.empty())
 		{
-			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}
