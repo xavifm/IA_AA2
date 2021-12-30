@@ -4,23 +4,23 @@ using namespace std;
 
 DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 {
-	Blackboard blackboard = Blackboard();
-
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
 	loadTextures("../res/maze.png", "../res/coin.png");
+	
+	blackBoard = new Blackboard(maze);
 
 	srand((unsigned int)time(NULL));
 
 	pathType = type;
 
-	Agent *agent = new Agent(&blackboard, this);
+	Agent *agent = new Agent(this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 
-	Agent* agent2 = new Agent(&blackboard, this);
+	Agent* agent2 = new Agent(this);
 	agent2->loadSpriteTexture("../res/soldier.png", 4);
 	agent2->setBehavior(new PathFollowing);
 	agent2->setTarget(Vector2D(-20, -20));
@@ -128,10 +128,10 @@ void DynamicScenePathFinding::calculateNewPath()
 			if (agents[i]->getPathSize() != 0) { agents[i]->clearPath(); }
 			Vector2D pos = maze->pix2cell(agents[i]->getPosition());
 			pathFinder = new A_Estrella();
-			std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+			std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, blackBoard->GetGraphPtr());
 			while (!pathfinding.empty())
 			{
-				agents[i]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+				agents[i]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 				pathfinding.pop();
 			}
 		}
@@ -154,10 +154,10 @@ void DynamicScenePathFinding::calculateNewPathSeparate(int pos, bool avoidRandom
 		if (agents[pos]->getPathSize() != 0) { agents[pos]->clearPath(); }
 		Vector2D pos2 = maze->pix2cell(agents[pos]->getPosition()) + random;
 		pathFinder = new A_Estrella();
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, maze);
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, blackBoard->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
-			agents[pos]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			agents[pos]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}

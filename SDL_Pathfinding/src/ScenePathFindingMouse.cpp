@@ -24,19 +24,19 @@ void ScenePathFindingMouse::ChangeType(PathFindingTypes type)
 
 ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 {
-	Blackboard blackboard = Blackboard();
-
 	ChangeType(type);
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
+	blackBoard = new Blackboard(maze);
+	
 	loadTextures("../res/maze.png", "../res/coin.png");
 
 	srand((unsigned int)time(NULL));
 
 	pathType = type;
 
-	Agent *agent = new Agent(&blackboard, this);
+	Agent *agent = new Agent(this);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
@@ -132,10 +132,10 @@ void ScenePathFindingMouse::calculateNewPath()
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, maze);
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, blackBoard->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
-			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->position));
+			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}

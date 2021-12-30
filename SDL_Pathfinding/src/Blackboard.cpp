@@ -4,6 +4,11 @@ Blackboard::Blackboard()
 {
 }
 
+Blackboard::Blackboard(Grid* grid)
+{
+	graph = new Graph(grid);
+}
+
 void Blackboard::SetFloat(std::string key, float value)
 {
 	theBlackboard[key] = &value;

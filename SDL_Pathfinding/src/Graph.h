@@ -14,26 +14,38 @@ public:
 	Vector2D GetPosition() { return position; }
 	bool ComparePosition(Vector2D pos);
 
-
-	inline bool operator==(const Node& n) const { return (position.x == n.position.x) && (position.y == n.position.y); }
-	inline bool operator!=(const Node& n) const { return (position.x != n.position.x) || (position.y != n.position.y); }
+	bool const operator==(const Node& lhs)
+	{
+		return (lhs.position.x == this->GetPosition().x) && (lhs.position.y == this->GetPosition().y);
+	}
+	bool const operator!= (const Node& lhs) { return (lhs.position.x != this->GetPosition().x) || (lhs.position.y != this->GetPosition().y); }
 };
 
 class Connection
 {
-	Node* nodeFrom;
-	Node* nodeTo;
+	Node* nodeFrom = nullptr;
+	Node* nodeTo = nullptr;
 public:
+	Connection(Node* _nodeFrom, Node* _nodeTo, float weight);
+
 	float weight;
 	Node* GetNodeFrom() { return nodeFrom; };
 	Node* GetNodeTo() { return nodeTo; };
 
-	inline bool operator==(const Vector2D& npos) const;
+	bool const operator==(const Vector2D& npos) const;
 };
 
 class Graph
 {
+	Vector2D mapSize;
+
 public:
 	Graph(Grid* grid);
 	std::vector<Connection*> connections;
+
+
+	std::vector<Connection*> GetNeighbours(Vector2D);
+
+	bool FindConnection(Vector2D, Vector2D);
+	Vector2D GetGridSize() { return mapSize; };
 };

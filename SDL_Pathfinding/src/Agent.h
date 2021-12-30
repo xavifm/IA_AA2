@@ -7,7 +7,6 @@
 #include "Path.h"
 #include "Vector2D.h"
 #include "utils.h"
-#include "Blackboard.h"
 #include "SensorySystem.h"
 
 
@@ -27,7 +26,6 @@ private:
 	Vector2D velocity;
 	Vector2D target;
 
-	Blackboard* blackBoard;
 	SensorySystem* sensors;
 
 	// Pathfinding
@@ -46,7 +44,7 @@ private:
 	int sprite_h;
 
 public:
-	Agent(Blackboard* _blackboard, Scene* world);
+	Agent(Scene* world);
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();
