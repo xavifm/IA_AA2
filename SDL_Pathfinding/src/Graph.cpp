@@ -12,4 +12,5 @@ bool Node::ComparePosition(Vector2D pos)
 
 Graph::Graph(Grid* grid)
 {
+
 }
