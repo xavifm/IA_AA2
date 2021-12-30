@@ -1,19 +1,15 @@
 #include "Graph.h"
 
-void Node::CalculateNeighbours()
+inline bool Connection::operator==(const Vector2D& npos) const
 {
-	neighbours.push_back(Vector2D(position.x + 1, position.y));
-	neighbours.push_back(Vector2D(position.x - 1, position.y));
-	neighbours.push_back(Vector2D(position.x, position.y + 1));
-	neighbours.push_back(Vector2D(position.x, position.y - 1));
+	return nodeFrom->ComparePosition(npos) || nodeTo->ComparePosition(npos);
 }
 
-Node::Node(Vector2D position) :position(position), weight(0)
+bool Node::ComparePosition(Vector2D pos)
 {
-	CalculateNeighbours();
+	return (position.x == pos.x) && (position.y == pos.y);
 }
 
-Node::Node(Vector2D position, float weight) : position(position), weight(weight)
+Graph::Graph(Grid* grid)
 {
-	CalculateNeighbours();
 }

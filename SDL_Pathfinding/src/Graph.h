@@ -1,32 +1,39 @@
 #pragma once
 #include "Vector2D.h"
 #include <vector>
+#include "Grid.h"
 
 class Node
 {
-	std::vector<Vector2D> neighbours;
-
-	void CalculateNeighbours();
-public:
 	Vector2D position;
-	float weight;
 
-	Node() : position(NULL), weight(0) {};
-	Node(Vector2D position);
-	Node(Vector2D position, float weight);
+public:
+	Node() : position(NULL) {};
+	Node(Vector2D position) : position(position) {};
 
-	int GetNeighbourCount() { return neighbours.size(); }
-	Vector2D GetNeighbour(int i) { return neighbours[i]; }
+	Vector2D GetPosition() { return position; }
+	bool ComparePosition(Vector2D pos);
+
 
 	inline bool operator==(const Node& n) const { return (position.x == n.position.x) && (position.y == n.position.y); }
 	inline bool operator!=(const Node& n) const { return (position.x != n.position.x) || (position.y != n.position.y); }
-	inline bool operator>=(const Node& n) const { return (weight >= n.weight); }
-	inline bool operator>(const Node& n) const { return (weight > n.weight); }
-	inline bool operator<=(const Node& n) const { return (weight <= n.weight); }
-	inline bool operator<(const Node& n) const { return (weight < n.weight); }
+};
+
+class Connection
+{
+	Node* nodeFrom;
+	Node* nodeTo;
+public:
+	float weight;
+	Node* GetNodeFrom() { return nodeFrom; };
+	Node* GetNodeTo() { return nodeTo; };
+
+	inline bool operator==(const Vector2D& npos) const;
 };
 
 class Graph
 {
-
+public:
+	Graph(Grid* grid);
+	std::vector<Connection*> connections;
 };
