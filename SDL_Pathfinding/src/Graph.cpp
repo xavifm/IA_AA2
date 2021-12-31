@@ -34,6 +34,8 @@ Graph::Graph(Grid* grid)
 		stack.pop();
 		Vector2D currentPos = current->GetPosition();
 
+		map[*current];
+
 		Vector2D nextPos = Vector2D(currentPos.x + 1, currentPos.y);
 		//Right neighbour
 		if (nextPos.x < grid->getNumCellX())
@@ -41,11 +43,15 @@ Graph::Graph(Grid* grid)
 			if (!FindConnection(currentPos, nextPos))
 			{
 				Node* n = new Node(nextPos);
+				map[*n];
 
 				stack.push(n);
 				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
 
+				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
+				map[*current].push_back(connection);
+				map[*n].push_back(connection);
 			}
 		}
 
@@ -56,11 +62,15 @@ Graph::Graph(Grid* grid)
 			if (!FindConnection(currentPos, nextPos))
 			{
 				Node* n = new Node(nextPos);
+				map[*n];
 
 				stack.push(n);
 				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
 
+				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
+				map[*current].push_back(connection);
+				map[*n].push_back(connection);
 			}
 		}
 
@@ -71,11 +81,15 @@ Graph::Graph(Grid* grid)
 			if (!FindConnection(currentPos, nextPos))
 			{
 				Node* n = new Node(nextPos);
+				map[*n];
 
 				stack.push(n);
 				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
 
+				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
+				map[*current].push_back(connection);
+				map[*n].push_back(connection);
 			}
 		}
 
@@ -86,37 +100,31 @@ Graph::Graph(Grid* grid)
 			if (!FindConnection(currentPos, nextPos))
 			{
 				Node* n = new Node(nextPos);
+				map[*n];
 
 				stack.push(n);
 				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
 
+				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
+				map[*current].push_back(connection);
+				map[*n].push_back(connection);
 			}
 		}
 	}
 }
 
-std::vector<Connection*> Graph::GetNeighbours(Vector2D current)
+Graph::~Graph()
 {
-	std::vector<Connection*> tmp;
-
-	for each (Connection* var in connections)
+	for each (Connection * var in connections)
 	{
-		if (var->GetNodeFrom()->GetPosition() == current || var->GetNodeTo()->GetPosition() == current)
-		{
-			tmp.push_back(var);
-		}
-
-		if (tmp.size() >= 8)
-			return tmp;
+		delete var;
 	}
-
-	return tmp;
 }
 
 bool Graph::FindConnection(Vector2D current, Vector2D next)
 {
-	for each (Connection * var in connections)
+	for each (Connection * var in map[current])
 	{
 		if (var->GetNodeFrom()->GetPosition() == current && var->GetNodeTo()->GetPosition() == next)
 		{

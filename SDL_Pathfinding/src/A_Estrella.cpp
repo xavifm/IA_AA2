@@ -36,7 +36,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 			break;
 		count++;
 
-		std::vector<Connection*> neighbours = graph->GetNeighbours(current->GetPosition());
+		std::vector<Connection*> neighbours = graph->GetConnections(current);
 
 		for (size_t i = 0; i < neighbours.size(); i++)
 		{

@@ -29,7 +29,7 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 			break;
 		count++;
 
-		std::vector<Connection*> neighbours = graph->GetNeighbours(current->GetPosition());
+		std::vector<Connection*> neighbours = graph->GetConnections(current);
 
 		for (size_t i = 0; i < neighbours.size(); i++)
 		{
