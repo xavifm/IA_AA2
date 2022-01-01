@@ -4,9 +4,12 @@
 
 float Greedy::Heuristic(Vector2D* goal, Vector2D* current)
 {
+	float D_PARAM = 1;
+	float D2_PARAM = 1;
+
 	float dx = abs(goal->x - current->x);
 	float dy = abs(goal->y - current->y);
-	return (dx + dy);
+	return D_PARAM * (dx + dy) + (D2_PARAM - 2 * D_PARAM) * min(dx, dy);
 }
 
 std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Graph* graph)
