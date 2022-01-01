@@ -46,7 +46,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
+				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -65,7 +65,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
+				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -84,7 +84,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
+				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -103,7 +103,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos));
+				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
