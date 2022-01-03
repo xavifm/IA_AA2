@@ -36,7 +36,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent(this);
+	Agent *agent = new Agent(this, 0);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));

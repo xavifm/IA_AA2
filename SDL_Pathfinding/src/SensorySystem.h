@@ -10,8 +10,8 @@
 
 class SensorySystem
 {
-	Scene* world;
 public:
+	Scene* world;
 	SensorySystem();
 	SensorySystem(Scene* _world);
 	float ViewDistance(Vector2D otherPos, Vector2D agentPos);

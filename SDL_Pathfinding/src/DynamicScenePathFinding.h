@@ -29,6 +29,7 @@ public:
 	void draw();
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
+	Blackboard* GetBlackBoard() { return blackBoard; }
 	
 private:
 	std::vector<Agent*> agents;

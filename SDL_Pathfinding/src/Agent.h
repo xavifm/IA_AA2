@@ -21,6 +21,10 @@ public:
 		virtual void applySteeringForce(Agent *agent, float dtime) {};
 	};
 private:
+	enum class SceneTypes {PATH_FINDING, DYNAMIC_PATH_FINDING};
+
+	SceneTypes type;
+
 	SteeringBehavior *steering_behaviour;
 	Vector2D position;
 	Vector2D velocity;
@@ -44,7 +48,7 @@ private:
 	int sprite_h;
 
 public:
-	Agent(Scene* world);
+	Agent(Scene* world, int);
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();

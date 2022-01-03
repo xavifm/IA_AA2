@@ -1,9 +1,10 @@
 #include "Agent.h"
 #include "ScenePathFindingMouse.h"
+#include "DynamicScenePathFinding.h"
 
 using namespace std;
 
-Agent::Agent(Scene* world) : sprite_texture(0),
+Agent::Agent(Scene* world, int sceneType) : sprite_texture(0),
                  position(Vector2D(100, 100)),
 	             target(Vector2D(1000, 100)),
 	             velocity(Vector2D(0,0)),
@@ -18,8 +19,14 @@ Agent::Agent(Scene* world) : sprite_texture(0),
 	             draw_sprite(false)
 {
 	sensors = new SensorySystem(world);
-	ScenePathFindingMouse* scene2 = (ScenePathFindingMouse*)world;
-	scene2->getBlackBoard()->SetInt("test", 1);
+	if (sceneType == 0)
+	{
+		type = SceneTypes::PATH_FINDING;
+	}
+	else if(sceneType == 1)
+	{
+		type = SceneTypes::DYNAMIC_PATH_FINDING;
+	}
 }
 
 Agent::~Agent()
@@ -82,6 +89,28 @@ void Agent::setVelocity(Vector2D _velocity)
 
 void Agent::update(float dtime, SDL_Event *event)
 {
+#pragma region Provisional Blackboard
+	ScenePathFindingMouse* tmp = nullptr;
+	DynamicScenePathFinding* tmp2 = nullptr;
+	switch (type)
+	{
+	case Agent::SceneTypes::PATH_FINDING:
+		tmp = (ScenePathFindingMouse*)sensors->world;
+		break;
+	case Agent::SceneTypes::DYNAMIC_PATH_FINDING:
+		tmp2 = (DynamicScenePathFinding*)sensors->world;
+		break;
+	}
+
+	if (tmp != nullptr)
+	{
+		tmp->GetBlackBoard();
+	}
+	else if (tmp2 != nullptr)
+	{
+		tmp2->GetBlackBoard();
+	}
+#pragma endregion
 
 	//cout << "agent update:" << endl;
 
