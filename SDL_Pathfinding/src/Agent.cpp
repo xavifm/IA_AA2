@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include "ScenePathFindingMouse.h"
 
 using namespace std;
 
@@ -17,6 +18,8 @@ Agent::Agent(Scene* world) : sprite_texture(0),
 	             draw_sprite(false)
 {
 	sensors = new SensorySystem(world);
+	ScenePathFindingMouse* scene2 = (ScenePathFindingMouse*)world;
+	scene2->getBlackBoard()->SetInt("test", 1);
 }
 
 Agent::~Agent()
