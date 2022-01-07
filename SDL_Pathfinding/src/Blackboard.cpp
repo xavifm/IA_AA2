@@ -4,6 +4,11 @@ Blackboard::Blackboard()
 {
 }
 
+Blackboard::~Blackboard()
+{
+	delete graph;
+}
+
 void Blackboard::SetFloat(std::string key, float value)
 {
 	theBlackboard[key] = &value;

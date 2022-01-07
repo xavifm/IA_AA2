@@ -30,6 +30,9 @@ Agent::Agent(Scene* world, Grid* maze) : sprite_texture(0),
 
 Agent::~Agent()
 {
+	delete blackboard;
+	delete sensors;
+
 	if (sprite_texture)
 		SDL_DestroyTexture(sprite_texture);
 	if (steering_behaviour)

@@ -12,6 +12,7 @@ class Blackboard
 
 public:
 	Blackboard();
+	~Blackboard();
 
 	void SetFloat(std::string key, float value);
 	float GetFloat(std::string key);
