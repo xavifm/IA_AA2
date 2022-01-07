@@ -4,8 +4,6 @@
 #include "PathFollowing.h"
 #include "Grid.h"
 #include "PathfindingAlgorythm.h"
-#include "Graph.h"
-#include "Blackboard.h"
 #include "Agent.h"
 #include "Dijkstra.h"
 #include "BFS.h"
@@ -26,7 +24,6 @@ public:
 	void draw();
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
-	Blackboard* GetBlackBoard() { return blackBoard; }
 	
 private:
 	std::vector<Agent*> agents;
@@ -35,7 +32,6 @@ private:
 	PathfindingAlgorythm* pathFinder;
 	PathFindingTypes pathType;
 
-	Blackboard* blackBoard;
 	Grid *maze;
 	bool draw_grid;
 

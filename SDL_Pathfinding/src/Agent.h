@@ -6,6 +6,8 @@
 #include "Blackboard.h"
 
 class Blackboard;
+class Graph;
+class Grid;
 
 class Agent
 {
@@ -46,7 +48,7 @@ private:
 	int sprite_h;
 
 public:
-	Agent(Scene* world, int);
+	Agent(Scene* world, Grid* g);
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();
@@ -67,5 +69,7 @@ public:
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
+
+	Graph* GetGraph();
 	
 };
