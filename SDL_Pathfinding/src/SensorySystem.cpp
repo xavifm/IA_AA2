@@ -25,7 +25,7 @@ bool SensorySystem::CheckLineOfSight(Vector2D agent1Point0, Vector2D agent1Point
 	return Vector2DUtils::SegmentSegmentIntersection(agent1Point0, agent1Point1, agent2Point0, agent2Point1);
 }
 
-/*void SensorySystem::Update(Agent* agent, float dtime)
+void SensorySystem::Update(Agent* agent, float dtime)
 {
 	
-}*/
+}
