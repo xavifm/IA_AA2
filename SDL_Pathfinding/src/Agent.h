@@ -6,6 +6,7 @@
 #include "Blackboard.h"
 
 class Blackboard;
+class SensorySystem;
 class Graph;
 class Grid;
 
@@ -70,6 +71,6 @@ public:
 	void draw();
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
 
-	Graph* GetGraph();
+	Blackboard* GetBlackboard();
 	
 };

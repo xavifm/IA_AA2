@@ -126,7 +126,7 @@ void DynamicScenePathFinding::calculateNewPath()
 			if (agents[i]->getPathSize() != 0) { agents[i]->clearPath(); }
 			Vector2D pos = maze->pix2cell(agents[i]->getPosition());
 			pathFinder = new A_Estrella();
-			std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[i]->GetGraph());
+			std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[i]->GetBlackboard()->GetGraphPtr());
 			while (!pathfinding.empty())
 			{
 				agents[i]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
@@ -152,7 +152,7 @@ void DynamicScenePathFinding::calculateNewPathSeparate(int pos, bool avoidRandom
 		if (agents[pos]->getPathSize() != 0) { agents[pos]->clearPath(); }
 		Vector2D pos2 = maze->pix2cell(agents[pos]->getPosition()) + random;
 		pathFinder = new A_Estrella();
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, agents[pos]->GetGraph());
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos2, &cell, agents[pos]->GetBlackboard()->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
 			agents[pos]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));

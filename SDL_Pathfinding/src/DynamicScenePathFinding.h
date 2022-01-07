@@ -24,7 +24,8 @@ public:
 	void draw();
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
-	
+	std::vector<Agent*>* GetAgents() { return &agents; };
+
 private:
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;

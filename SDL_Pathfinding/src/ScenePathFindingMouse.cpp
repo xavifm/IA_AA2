@@ -130,7 +130,7 @@ void ScenePathFindingMouse::calculateNewPath()
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetGraph());
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetBlackboard()->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
 			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));

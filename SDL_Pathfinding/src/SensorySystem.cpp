@@ -27,5 +27,24 @@ bool SensorySystem::CheckLineOfSight(Vector2D agent1Point0, Vector2D agent1Point
 
 void SensorySystem::Update(Agent* agent, float dtime)
 {
-	
+	Agent* other = nullptr;
+	if(world->GetAgents()->size() <= 1) 
+	{
+		return;
+	}
+	if((*world->GetAgents())[1] == agent) 
+	{
+		other = (*world->GetAgents())[0];
+	}
+	else if((*world->GetAgents())[0] == agent) 
+	{
+		other = (*world->GetAgents())[1];
+	}
+	if(other != nullptr) 
+	{
+		if((ViewDistance(other->getPosition(), agent->getPosition()) < 50 || CheckIfAPositionIsInsideViewCone(other->getPosition(), agent->getPosition(), agent->getVelocity()))) 
+		{
+			agent->GetBlackboard()->SetVector2D("enemy", other->getPosition());
+		}
+	}
 }

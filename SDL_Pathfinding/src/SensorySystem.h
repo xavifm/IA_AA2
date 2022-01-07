@@ -3,6 +3,7 @@
 #include <queue>
 #include <stack>
 #include "Scene.h"
+#include "Agent.h"
 
 /*Comprovació de distància de visió (View distance).
 • Comprovació del con de visió (View cone).

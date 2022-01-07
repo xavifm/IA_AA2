@@ -91,7 +91,7 @@ void Agent::setVelocity(Vector2D _velocity)
 
 void Agent::update(float dtime, SDL_Event *event)
 {
-
+	sensors->Update(this, dtime);
 	//cout << "agent update:" << endl;
 
 	switch (event->type) {
@@ -210,7 +210,7 @@ bool Agent::loadSpriteTexture(char* filename, int _num_frames)
 	return true;
 }
 
-Graph* Agent::GetGraph()
+Blackboard* Agent::GetBlackboard()
 {
-	return blackboard->GetGraphPtr();
+	return blackboard;
 }
