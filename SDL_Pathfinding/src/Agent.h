@@ -1,14 +1,11 @@
 #pragma once
-#include <iostream>
-#include <minmax.h>
-#include <SDL.h>
-#include <SDL_image.h>
 #include "SDL_SimpleApp.h"
 #include "Path.h"
-#include "Vector2D.h"
-#include "utils.h"
 #include "SensorySystem.h"
 
+#include "Blackboard.h"
+
+class Blackboard;
 
 class Agent
 {
@@ -30,6 +27,7 @@ private:
 	Vector2D velocity;
 	Vector2D target;
 
+	Blackboard* blackboard;
 	SensorySystem* sensors;
 
 	// Pathfinding

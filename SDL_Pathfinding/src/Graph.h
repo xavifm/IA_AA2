@@ -6,6 +6,8 @@
 #include <iostream>
 #include <functional>
 
+class Grid;
+
 class Node
 {
 	Vector2D position;
@@ -45,12 +47,6 @@ public:
 		return (position.x > lhs->position.x)/* || ((position.x == lhs.position.x) && (position.y > lhs.position.y)) */;
 	}
 	bool const operator!= (const Node& lhs) { return (lhs.position.x != this->GetPosition().x) || (lhs.position.y != this->GetPosition().y); }
-};
-
-struct cmpByNodePosition {
-	bool operator()(const Node*& a,const Node*& b) const {
-		return a < b;
-	}
 };
 
 class Connection

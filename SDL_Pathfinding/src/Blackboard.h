@@ -1,9 +1,9 @@
 #pragma once
 #include "Graph.h"
 
-#include <queue>
-#include <stack>
 #include <unordered_map>
+
+class Graph;
 
 class Blackboard
 {
@@ -12,7 +12,6 @@ class Blackboard
 
 public:
 	Blackboard();
-	Blackboard(Grid* grid);
 
 	void SetFloat(std::string key, float value);
 	float GetFloat(std::string key);

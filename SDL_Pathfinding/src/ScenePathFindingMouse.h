@@ -1,19 +1,16 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <time.h>
-#include "Scene.h"
-#include "Agent.h"
-#include "Seek.h"
 #include "PathFollowing.h"
 #include "Grid.h"
 #include "PathfindingAlgorythm.h"
 #include "Graph.h"
+#include "Blackboard.h"
+#include "Agent.h"
 #include "Dijkstra.h"
 #include "BFS.h"
 #include "Greedy.h"
 #include "A_Estrella.h"
-#include "Blackboard.h"
 
 
 class ScenePathFindingMouse :

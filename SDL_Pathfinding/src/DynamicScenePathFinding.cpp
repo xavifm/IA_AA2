@@ -9,7 +9,11 @@ DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 
 	loadTextures("../res/maze.png", "../res/coin.png");
 	
-	blackBoard = new Blackboard(maze);
+	Graph* g = new Graph(maze);
+
+	blackBoard = new Blackboard();
+
+	blackBoard->SetGraphPtr(g);
 
 	srand((unsigned int)time(NULL));
 

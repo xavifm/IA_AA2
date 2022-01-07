@@ -28,7 +28,11 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	draw_grid = false;
 	maze = new Grid("../res/maze.csv");
 
-	blackBoard = new Blackboard(maze);
+	Graph* g = new Graph(maze);
+
+	blackBoard = new Blackboard();
+
+	blackBoard->SetGraphPtr(g);
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
 
