@@ -2,6 +2,8 @@
 #include <iostream>
 #include <SDL.h>
 #include <vector>
+#include <stack>
+
 
 class Agent;
 
@@ -15,5 +17,6 @@ public:
 	virtual const char* getTitle() { return ""; };
 
 	virtual std::vector<Agent*>* GetAgents() = 0;
+	virtual std::stack <Node*> calculateNewPath(Vector2D target) = 0;
 };
 

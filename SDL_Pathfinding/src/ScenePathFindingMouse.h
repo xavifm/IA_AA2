@@ -9,6 +9,7 @@
 #include "BFS.h"
 #include "Greedy.h"
 #include "A_Estrella.h"
+#include <stack>
 
 
 class ScenePathFindingMouse :
@@ -40,7 +41,7 @@ private:
 
 	int index = 0;
 	
-	void calculateNewPath();
+	virtual std::stack<Node*> calculateNewPath(Vector2D target) override;
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;

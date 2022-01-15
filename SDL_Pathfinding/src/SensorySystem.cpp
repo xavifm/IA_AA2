@@ -1,4 +1,5 @@
 #include "SensorySystem.h"
+#include <string>
 
 SensorySystem::SensorySystem()
 {
@@ -27,24 +28,21 @@ bool SensorySystem::CheckLineOfSight(Vector2D agent1Point0, Vector2D agent1Point
 
 void SensorySystem::Update(Agent* agent, float dtime)
 {
-	Agent* other = nullptr;
-	if(world->GetAgents()->size() <= 1) 
+	std::vector<Agent*> agents = *world->GetAgents();
+	for (int i = 0; i < agents.size(); i++)
 	{
-		return;
-	}
-	if((*world->GetAgents())[1] == agent) 
-	{
-		other = (*world->GetAgents())[0];
-	}
-	else if((*world->GetAgents())[0] == agent) 
-	{
-		other = (*world->GetAgents())[1];
-	}
-	if(other != nullptr) 
-	{
-		if((ViewDistance(other->getPosition(), agent->getPosition()) < 50 || CheckIfAPositionIsInsideViewCone(other->getPosition(), agent->getPosition(), agent->getVelocity()))) 
+		if (agents[i] == agent) continue;
+		if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) < 50 && 
+			CheckIfAPositionIsInsideViewCone(agents[i]->getPosition(), agent->getPosition(), agent->getVelocity()) /* &&
+			CheckLineOfSight() */)
 		{
-			agent->GetBlackboard()->SetVector2D("enemy", other->getPosition());
+			agent->GetBlackboard()->SetVector2D("enemy" + std::to_string(i), agents[i]->getPosition());
 		}
 	}
+	
+}
+
+std::stack<Node*> SensorySystem::CalculatePath(Vector2D target)
+{
+	return world->calculateNewPath(target);
 }

@@ -80,32 +80,6 @@ ScenePathFindingMouse::~ScenePathFindingMouse()
 
 void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 {
-	/* Keyboard & Mouse events */
-	/*switch (event->type) {
-	case SDL_KEYDOWN:
-		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
-			draw_grid = !draw_grid;
-		break;
-		if(event->key.keysym.scancode == SDL_SCANCODE_2)
-			if(pathType!=PathFindingTypes::BREADTH_FIRST_SEARCH)
-				ChangeType(PathFindingTypes::BREADTH_FIRST_SEARCH);
-		break;
-		if (event->key.keysym.scancode == SDL_SCANCODE_3)
-			if (pathType != PathFindingTypes::DIJKSTRA)
-				ChangeType(PathFindingTypes::DIJKSTRA);
-		break;		
-		if (event->key.keysym.scancode == SDL_SCANCODE_2)
-			if (pathType != PathFindingTypes::GREEDY)
-				ChangeType(PathFindingTypes::GREEDY);
-		break;
-		if (event->key.keysym.scancode == SDL_SCANCODE_4)
-			if (pathType != PathFindingTypes::A_ESTRELLA)
-				ChangeType(PathFindingTypes::A_ESTRELLA);
-		break;
-	default:
-		break;
-	}*/
-
 	agents[0]->update(dtime, event);
 
 	// if we have arrived to the coin, replace it in a random cell!
@@ -116,16 +90,15 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 		if(index < 20) 
 		{
 			coinPosition = coinLocations[index];
-			calculateNewPath();
+			//calculateNewPath();
 			index++;
 		}
 	}
-	
 }
 
-void ScenePathFindingMouse::calculateNewPath()
+std::stack<Node*> ScenePathFindingMouse::calculateNewPath(Vector2D target)
 {
-	Vector2D cell = coinPosition;
+	Vector2D cell = target;
 	if (maze->isValidCell(cell))
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
@@ -136,7 +109,11 @@ void ScenePathFindingMouse::calculateNewPath()
 			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
+
+		return pathfinding;
 	}
+
+	return std::stack<Node*>();
 }
 
 void ScenePathFindingMouse::draw()
