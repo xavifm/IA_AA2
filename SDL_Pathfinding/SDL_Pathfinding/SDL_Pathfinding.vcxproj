@@ -137,6 +137,10 @@
     <ClCompile Include="..\src\Blackboard.cpp" />
     <ClCompile Include="..\src\Dijkstra.cpp" />
     <ClCompile Include="..\src\DynamicScenePathFinding.cpp" />
+    <ClCompile Include="..\src\FSM.cpp" />
+    <ClCompile Include="..\src\FSMState_Chase.cpp" />
+    <ClCompile Include="..\src\FSMState_Flee.cpp" />
+    <ClCompile Include="..\src\FSMState_Wander.cpp" />
     <ClCompile Include="..\src\Graph.cpp" />
     <ClCompile Include="..\src\Greedy.cpp" />
     <ClCompile Include="..\src\Grid.cpp" />
@@ -153,8 +157,14 @@
     <ClInclude Include="..\src\A_Estrella.h" />
     <ClInclude Include="..\src\BFS.h" />
     <ClInclude Include="..\src\Blackboard.h" />
+    <ClInclude Include="..\src\DecisionMakingAlgorithm.h" />
     <ClInclude Include="..\src\Dijkstra.h" />
     <ClInclude Include="..\src\DynamicScenePathFinding.h" />
+    <ClInclude Include="..\src\FSM.h" />
+    <ClInclude Include="..\src\FSMState.h" />
+    <ClInclude Include="..\src\FSMState_Chase.h" />
+    <ClInclude Include="..\src\FSMState_Flee.h" />
+    <ClInclude Include="..\src\FSMState_Wander.h" />
     <ClInclude Include="..\src\Graph.h" />
     <ClInclude Include="..\src\Greedy.h" />
     <ClInclude Include="..\src\Grid.h" />

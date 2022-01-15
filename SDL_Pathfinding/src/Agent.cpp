@@ -1,6 +1,6 @@
 #include "Agent.h"
-#include "ScenePathFindingMouse.h"
-#include "DynamicScenePathFinding.h"
+#include "FSM.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -25,6 +25,8 @@ Agent::Agent(Scene* world, Grid* maze) : sprite_texture(0),
 	Graph *g = new Graph(maze);
 
 	blackboard->SetGraphPtr(g);
+
+	decisionAlgorithm = new FSM();
 	
 }
 

@@ -2,13 +2,14 @@
 #include "SDL_SimpleApp.h"
 #include "Path.h"
 #include "SensorySystem.h"
-
 #include "Blackboard.h"
+#include "DecisionMakingAlgorithm.h"
 
 class Blackboard;
 class SensorySystem;
 class Graph;
 class Grid;
+class DecisionMakingAlgorithm;
 
 class Agent
 {
@@ -47,6 +48,8 @@ private:
 	int sprite_num_frames;
 	int sprite_w;
 	int sprite_h;
+
+	DecisionMakingAlgorithm* decisionAlgorithm;
 
 public:
 	Agent(Scene* world, Grid* g);
