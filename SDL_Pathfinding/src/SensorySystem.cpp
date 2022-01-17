@@ -21,9 +21,14 @@ bool SensorySystem::CheckIfAPositionIsInsideViewCone(Vector2D otherPos, Vector2D
 	return Vector2DUtils::IsInsideCone(otherPos, agentPos, agentVelocity.Normalize() * 10, 20);
 }
 
-bool SensorySystem::CheckLineOfSight(Vector2D agent1Point0, Vector2D agent1Point1, Vector2D agent2Point0, Vector2D agent2Point1)
+bool SensorySystem::CheckLineOfSight(Vector2D agentPos, Vector2D otherPos, Grid* grid)
 {
-	return Vector2DUtils::SegmentSegmentIntersection(agent1Point0, agent1Point1, agent2Point0, agent2Point1);
+	Vector2D intersectionPoint;
+	Vector2DUtils::SegmentSegmentIntersection(agent1Point0, agent1Point1, agent2Point0, agent2Point1, true, &intersectionPoint);
+	if (intersectionPoint != Vector2D(0, 0)) 
+		return grid->isValidCell(intersectionPoint);
+	else
+		return false;
 }
 
 void SensorySystem::Update(Agent* agent, float dtime)
@@ -32,6 +37,9 @@ void SensorySystem::Update(Agent* agent, float dtime)
 	for (int i = 0; i < agents.size(); i++)
 	{
 		if (agents[i] == agent) continue;
+		
+
+
 		if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) < 5 * CELL_SIZE && 
 			CheckIfAPositionIsInsideViewCone(agents[i]->getPosition(), agent->getPosition(), agent->getVelocity()) /* &&
 			CheckLineOfSight() */)
