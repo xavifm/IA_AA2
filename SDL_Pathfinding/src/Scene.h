@@ -19,7 +19,7 @@ public:
 	virtual const char* getTitle() { return ""; };
 
 	virtual std::vector<Agent*>* GetAgents() = 0;
-	virtual std::vector<Vector2D> calculateNewPath(Vector2D target) = 0;
+	virtual void calculateNewPath(Agent* agent) = 0;
 	virtual Grid* GetGrid() = 0;
 	virtual Vector2D RandomPos() = 0;
 };

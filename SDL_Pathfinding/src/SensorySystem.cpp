@@ -70,9 +70,9 @@ void SensorySystem::Update(Agent* agent, float dtime)
 	}
 }
 
-std::stack<Node*> SensorySystem::CalculatePath(Vector2D target)
+void SensorySystem::CalculatePath(Agent* agent)
 {
-	return world->calculateNewPath(target);
+	world->calculateNewPath(agent);
 }
 
 Vector2D SensorySystem::GetRandomCell()

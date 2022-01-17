@@ -25,6 +25,6 @@ public:
 	bool CheckIfAPositionIsInsideViewCone(Vector2D otherPos, Vector2D agentPos, Vector2D agentVelocity);
 	bool CheckLineOfSight(Vector2D agentPos, Vector2D otherPos, Grid* grid);
 	void Update(Agent* agent, float dtime);
-	std::stack<Node*> CalculatePath(Vector2D target);
+	void CalculatePath(Agent* agent);
 	Vector2D GetRandomCell();
 };

@@ -136,23 +136,20 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 	}
 }*/
 
-std::vector<Vector2D> DynamicScenePathFinding::calculateNewPath(Vector2D target)
+void DynamicScenePathFinding::calculateNewPath(Agent* agent)
 {
-	std::vector<Vector2D> tmp;
-	Vector2D cell = target;
+	Vector2D cell = agent->getTarget();
 	if (maze->isValidCell(cell))
 	{
-		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
-		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetBlackboard()->GetGraphPtr());
+		if (agent->getPathSize() != 0) { agent->clearPath(); }
+		Vector2D pos = maze->pix2cell(agent->getPosition());
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agent->GetBlackboard()->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
-			tmp.push_back(maze->cell2pix(pathfinding.top()->GetPosition()));
+			agent->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}
-
-	return tmp;
 }
 
 void DynamicScenePathFinding::draw()

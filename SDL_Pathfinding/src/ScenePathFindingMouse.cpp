@@ -101,39 +101,23 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	for (size_t i = 0; i < agents.size(); i++)
 	{
 		agents[i]->update(dtime, event);
-
-		// if we have arrived to the coin, replace it in a random cell!
-		if ((agents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[i]->getPosition()) == coinPosition))
-		{
-			coinPosition = Vector2D(-1, -1);
-
-			if(index < 20) 
-			{
-				coinPosition = coinLocations[index];
-				//calculateNewPath();
-				index++;
-			}
-		}
 	}
 }
 
-std::vector<Vector2D> ScenePathFindingMouse::calculateNewPath(Vector2D target)
+void ScenePathFindingMouse::calculateNewPath(Agent* agent)
 {
-	std::vector<Vector2D> tmp;
-	Vector2D cell = target;
+	Vector2D cell = agent->getTarget();
 	if (maze->isValidCell(cell))
 	{
-		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
-		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
-		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetBlackboard()->GetGraphPtr());
+		if (agent->getPathSize() != 0) { agent->clearPath(); }
+		Vector2D pos = maze->pix2cell(agent->getPosition());
+		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agent->GetBlackboard()->GetGraphPtr());
 		while (!pathfinding.empty())
 		{
-			tmp.push_back(maze->cell2pix(pathfinding.top()->GetPosition()));
+			agent->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
 		}
 	}
-
-	return tmp;
 }
 
 void ScenePathFindingMouse::draw()

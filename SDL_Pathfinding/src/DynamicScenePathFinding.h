@@ -46,6 +46,6 @@ private:
 	SDL_Texture *background_texture;
 	SDL_Texture *coin_texture;
 	bool loadTextures(char* filename_bg, char* filename_coin);
-	virtual std::vector<Vector2D> calculateNewPath(Vector2D target) override;
+	virtual void calculateNewPath(Agent* agent) override;
 
 };

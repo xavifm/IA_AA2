@@ -43,7 +43,7 @@ private:
 
 	int index = 0;
 	
-	virtual std::vector<Vector2D> calculateNewPath(Vector2D target) override;
+	virtual void calculateNewPath(Agent* agent) override;
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;

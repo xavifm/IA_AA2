@@ -220,7 +220,7 @@ void Agent::SetRandomTarget()
 
 void Agent::CalculatePath()
 {
-	sensors->CalculatePath(target);
+	sensors->CalculatePath(this);
 }
 
 Blackboard* Agent::GetBlackboard()
