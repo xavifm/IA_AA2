@@ -32,15 +32,13 @@ void SensorySystem::Update(Agent* agent, float dtime)
 	for (int i = 0; i < agents.size(); i++)
 	{
 		if (agents[i] == agent) continue;
-		if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) < 50 && 
+		if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) < 5 * CELL_SIZE && 
 			CheckIfAPositionIsInsideViewCone(agents[i]->getPosition(), agent->getPosition(), agent->getVelocity()) /* &&
 			CheckLineOfSight() */)
 		{
 			agent->GetBlackboard()->SetVector2D("enemy" + std::to_string(i), agents[i]->getPosition());
 		}
-	}
-	
-}
+	}}
 
 std::stack<Node*> SensorySystem::CalculatePath(Vector2D target)
 {

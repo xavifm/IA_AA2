@@ -10,7 +10,6 @@
 #include "Greedy.h"
 #include "A_Estrella.h"
 
-
 class DynamicScenePathFinding :
 	public Scene
 {
@@ -25,6 +24,7 @@ public:
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
 	std::vector<Agent*>* GetAgents() { return &agents; };
+
 
 private:
 	std::vector<Agent*> agents;
@@ -41,11 +41,11 @@ private:
 	int index = 0;
 	
 	void calculateNewPath();
-	void calculateNewPathSeparate(int pos, bool searchCoin);
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;
 	SDL_Texture *coin_texture;
 	bool loadTextures(char* filename_bg, char* filename_coin);
+	virtual std::stack<Node*> calculateNewPath(Vector2D target) override;
 
 };

@@ -3,8 +3,9 @@
 #include <SDL.h>
 #include <vector>
 #include <stack>
+#include "Vector2D.h"
 
-
+class Node;
 class Agent;
 
 class Scene
