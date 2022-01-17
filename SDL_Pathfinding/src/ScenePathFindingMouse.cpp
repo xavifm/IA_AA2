@@ -22,6 +22,16 @@ void ScenePathFindingMouse::ChangeType(PathFindingTypes type)
 	}
 }
 
+Vector2D ScenePathFindingMouse::RandomPos()
+{
+	while(true) 
+	{
+		Vector2D ramdomVector = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));;
+		if (maze->isValidCell(ramdomVector))
+			return ramdomVector;
+	}
+}
+
 ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 {
 	ChangeType(type);
@@ -29,8 +39,6 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	maze = new Grid("../res/maze.csv");
 	
 	loadTextures("../res/maze.png", "../res/coin.png");
-
-	srand((unsigned int)time(NULL));
 
 	pathType = type;
 
@@ -48,13 +56,14 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	// set agent position coords to the center of a random cell
 	Vector2D rand_cell(-1,-1);
-	srand(1);
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 4, rand_cell.y)));
 	agents[0]->setVelocity(Vector2D(0, -1));
+	agents[0]->setTarget(agents[0]->getPosition());
 	agents[1]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 4, rand_cell.y - 3)));
 	agents[1]->setVelocity(Vector2D(0, 1));
+	agents[1]->setTarget(agents[1]->getPosition());
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1,-1);
@@ -108,24 +117,23 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	}
 }
 
-std::stack<Node*> ScenePathFindingMouse::calculateNewPath(Vector2D target)
+std::vector<Vector2D> ScenePathFindingMouse::calculateNewPath(Vector2D target)
 {
+	std::vector<Vector2D> tmp;
 	Vector2D cell = target;
 	if (maze->isValidCell(cell))
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
 		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetBlackboard()->GetGraphPtr());
-		/*while (!pathfinding.empty())
+		while (!pathfinding.empty())
 		{
-			agents[0]->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
+			tmp.push_back(maze->cell2pix(pathfinding.top()->GetPosition()));
 			pathfinding.pop();
-		}*/
-
-		return pathfinding;
+		}
 	}
 
-	return std::stack<Node*>();
+	return tmp;
 }
 
 void ScenePathFindingMouse::draw()

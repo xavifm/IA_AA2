@@ -136,18 +136,23 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 	}
 }*/
 
-std::stack<Node*> DynamicScenePathFinding::calculateNewPath(Vector2D target)
+std::vector<Vector2D> DynamicScenePathFinding::calculateNewPath(Vector2D target)
 {
+	std::vector<Vector2D> tmp;
 	Vector2D cell = target;
 	if (maze->isValidCell(cell))
 	{
 		if (agents[0]->getPathSize() != 0) { agents[0]->clearPath(); }
 		Vector2D pos = maze->pix2cell(agents[0]->getPosition());
 		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agents[0]->GetBlackboard()->GetGraphPtr());
-		return pathfinding;
+		while (!pathfinding.empty())
+		{
+			tmp.push_back(maze->cell2pix(pathfinding.top()->GetPosition()));
+			pathfinding.pop();
+		}
 	}
 
-	return std::stack<Node*>();
+	return tmp;
 }
 
 void DynamicScenePathFinding::draw()
@@ -175,6 +180,16 @@ void DynamicScenePathFinding::draw()
 const char* DynamicScenePathFinding::getTitle()
 {
 	return "SDL Path Finding :: PathFinding Mouse Demo";
+}
+
+Vector2D DynamicScenePathFinding::RandomPos()
+{
+	while (true)
+	{
+		Vector2D ramdomVector = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+		if (maze->isValidCell(ramdomVector))
+			return ramdomVector;
+	}
 }
 
 void DynamicScenePathFinding::drawMaze()

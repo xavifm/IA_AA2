@@ -25,6 +25,7 @@ public:
 	void ChangeType(PathFindingTypes);
 	virtual std::vector<Agent*>* GetAgents() override { return &agents; };
 	virtual Grid* GetGrid() override { return maze; };
+	virtual Vector2D RandomPos() override;
 
 
 private:
@@ -45,6 +46,6 @@ private:
 	SDL_Texture *background_texture;
 	SDL_Texture *coin_texture;
 	bool loadTextures(char* filename_bg, char* filename_coin);
-	virtual std::stack<Node*> calculateNewPath(Vector2D target) override;
+	virtual std::vector<Vector2D> calculateNewPath(Vector2D target) override;
 
 };

@@ -26,4 +26,5 @@ public:
 	bool CheckLineOfSight(Vector2D agentPos, Vector2D otherPos, Grid* grid);
 	void Update(Agent* agent, float dtime);
 	std::stack<Node*> CalculatePath(Vector2D target);
+	Vector2D GetRandomCell();
 };

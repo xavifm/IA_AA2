@@ -1,8 +1,10 @@
 #include "FSMState_Wander.h"
 #include "FSMState_Chase.h"
+#include "Utils.h"
 
 FSMState_Wander::FSMState_Wander()
 {
+	//srand(time(NULL));
 	timeToChange = false;
 }
 
@@ -16,7 +18,14 @@ FSMState* FSMState_Wander::Update(Agent* agent, float dTime)
 	bool enemySpotted = false;
 
 	//Agent deploy state actions/movement
-	
+
+	if(Vector2D::Distance(agent->getPosition(), agent->getTarget()) <= 20) 
+	{
+		agent->SetRandomTarget();
+		Vector2D TMP = agent->getTarget();
+		agent->CalculatePath();
+	}
+
 	//Transitions between states are checked here!
 	if (enemySpotted) timeToChange = true;
 

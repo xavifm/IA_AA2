@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <SDL.h>
+#include <time.h>
 
 enum class PathFindingTypes { DIJKSTRA, A_ESTRELLA, GREEDY, BREADTH_FIRST_SEARCH };
 
@@ -45,6 +46,12 @@ void set_pixel(SDL_Renderer *rend, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint
 {
 	SDL_SetRenderDrawColor(rend, r, g, b, a);
 	SDL_RenderDrawPoint(rend, x, y);
+}
+
+int Random(float min, float max)
+{
+	srand(12);
+	return (int)rand % (int)((max - min) + min);
 }
 
 void draw_circle(SDL_Renderer *surface, int n_cx, int n_cy, int rad, Uint8 r, Uint8 g, Uint8 b, Uint8 a)

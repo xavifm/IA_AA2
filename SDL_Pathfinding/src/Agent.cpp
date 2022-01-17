@@ -94,6 +94,7 @@ void Agent::setVelocity(Vector2D _velocity)
 void Agent::update(float dtime, SDL_Event *event)
 {
 	sensors->Update(this, dtime);
+	decisionAlgorithm->Update(this, dtime);
 	//cout << "agent update:" << endl;
 
 	switch (event->type) {
@@ -210,6 +211,16 @@ bool Agent::loadSpriteTexture(char* filename, int _num_frames)
 		SDL_FreeSurface(image);
 
 	return true;
+}
+
+void Agent::SetRandomTarget()
+{
+	target = sensors->GetRandomCell();
+}
+
+void Agent::CalculatePath()
+{
+	sensors->CalculatePath(target);
 }
 
 Blackboard* Agent::GetBlackboard()

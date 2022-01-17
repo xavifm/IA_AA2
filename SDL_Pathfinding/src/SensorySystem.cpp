@@ -74,3 +74,8 @@ std::stack<Node*> SensorySystem::CalculatePath(Vector2D target)
 {
 	return world->calculateNewPath(target);
 }
+
+Vector2D SensorySystem::GetRandomCell()
+{
+	return world->RandomPos();
+}
