@@ -40,12 +40,21 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	agent->setTarget(Vector2D(-20,-20));
 	agents.push_back(agent);
 
+	agent = new Agent(this, maze);
+	agent->loadSpriteTexture("../res/soldier.png", 4);
+	agent->setBehavior(new PathFollowing);
+	agent->setTarget(Vector2D(-20, -20));
+	agents.push_back(agent);
+
 	// set agent position coords to the center of a random cell
 	Vector2D rand_cell(-1,-1);
 	srand(1);
 	while (!maze->isValidCell(rand_cell))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
-	agents[0]->setPosition(maze->cell2pix(rand_cell));
+	agents[0]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 4, rand_cell.y)));
+	agents[0]->setVelocity(Vector2D(0, -1));
+	agents[1]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 4, rand_cell.y - 3)));
+	agents[1]->setVelocity(Vector2D(0, 1));
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1,-1);
@@ -80,18 +89,21 @@ ScenePathFindingMouse::~ScenePathFindingMouse()
 
 void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 {
-	agents[0]->update(dtime, event);
-
-	// if we have arrived to the coin, replace it in a random cell!
-	if ((agents[0]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[0]->getPosition()) == coinPosition))
+	for (size_t i = 0; i < agents.size(); i++)
 	{
-		coinPosition = Vector2D(-1, -1);
+		agents[i]->update(dtime, event);
 
-		if(index < 20) 
+		// if we have arrived to the coin, replace it in a random cell!
+		if ((agents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(agents[i]->getPosition()) == coinPosition))
 		{
-			coinPosition = coinLocations[index];
-			//calculateNewPath();
-			index++;
+			coinPosition = Vector2D(-1, -1);
+
+			if(index < 20) 
+			{
+				coinPosition = coinLocations[index];
+				//calculateNewPath();
+				index++;
+			}
 		}
 	}
 }
@@ -134,7 +146,10 @@ void ScenePathFindingMouse::draw()
 		}
 	}
 
-	agents[0]->draw();
+	for (size_t i = 0; i < agents.size(); i++)
+	{
+		agents[i]->draw();
+	}
 }
 
 const char* ScenePathFindingMouse::getTitle()

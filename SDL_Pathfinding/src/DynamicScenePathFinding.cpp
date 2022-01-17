@@ -107,7 +107,7 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 			if (index < 20)
 			{
 				coinPosition = coinLocations[index];
-				calculateNewPath();
+				//calculateNewPath();
 				index++;
 			}
 		}

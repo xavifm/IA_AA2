@@ -25,7 +25,8 @@ public:
 	void draw();
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
-	std::vector<Agent*>* GetAgents() { return &agents; };
+	virtual std::vector<Agent*>* GetAgents() override { return &agents; };
+	virtual Grid* GetGrid() override { return maze; } ;
 	
 private:
 	std::vector<Agent*> agents;

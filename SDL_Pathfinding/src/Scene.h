@@ -7,6 +7,7 @@
 
 class Node;
 class Agent;
+class Grid;
 
 class Scene
 {
@@ -19,5 +20,6 @@ public:
 
 	virtual std::vector<Agent*>* GetAgents() = 0;
 	virtual std::stack <Node*> calculateNewPath(Vector2D target) = 0;
+	virtual Grid* GetGrid() = 0;
 };
 

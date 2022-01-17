@@ -16,6 +16,7 @@ class Grid;
 
 class SensorySystem
 {
+	float visionRange = CELL_SIZE * 5;
 	Scene* world;
 public:
 	SensorySystem();

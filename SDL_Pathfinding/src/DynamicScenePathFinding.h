@@ -23,7 +23,8 @@ public:
 	void draw();
 	const char* getTitle();
 	void ChangeType(PathFindingTypes);
-	std::vector<Agent*>* GetAgents() { return &agents; };
+	virtual std::vector<Agent*>* GetAgents() override { return &agents; };
+	virtual Grid* GetGrid() override { return maze; };
 
 
 private:
@@ -39,8 +40,6 @@ private:
 	Vector2D coinLocations[20];
 
 	int index = 0;
-	
-	void calculateNewPath();
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;
