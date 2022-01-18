@@ -66,6 +66,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 				{
 					Node* node = new Node(neighbour);
 					node->priority = hCost;
+
 					frontier.push(node);
 
 					bool tmp = node < current;

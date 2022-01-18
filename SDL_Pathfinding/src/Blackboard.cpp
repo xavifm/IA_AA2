@@ -21,7 +21,7 @@ float Blackboard::GetFloat(std::string key)
 
 void Blackboard::SetInt(std::string key, int value)
 {
-	theBlackboard[key] = (int*) value;
+	theBlackboard[key] = (int*)value;
 }
 
 int Blackboard::GetInt(std::string key)
