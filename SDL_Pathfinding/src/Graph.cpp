@@ -7,8 +7,8 @@ Connection::Connection(Node* _nodeFrom, Node* _nodeTo, float _weight)
 {
 	nodeFrom = _nodeFrom;
 	nodeTo = _nodeTo;
-	weight = initialWeight = _weight;
-
+	weight = _weight;
+	initialWeight = _weight;
 }
 
 bool const Connection::operator==(const Vector2D& npos) const
@@ -68,10 +68,9 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + (-100 * (!grid->isValidCell(nextPos) || !grid->isValidCell(currentPos)));
 
 				Connection* connection = new Connection(current, n, _weight);
-				connections.push_back(new Connection(current, n, _weight));
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
 			}
@@ -87,10 +86,9 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + (-100 * (!grid->isValidCell(nextPos) || !grid->isValidCell(currentPos)));
 
 				Connection* connection = new Connection(current, n, _weight);
-				connections.push_back(new Connection(current, n, _weight));
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
 			}
@@ -106,10 +104,9 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + (-100 * (!grid->isValidCell(nextPos) || !grid->isValidCell(currentPos)));
 
 				Connection* connection = new Connection(current, n, _weight);
-				connections.push_back(new Connection(current, n, _weight));
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
 			}
@@ -125,10 +122,9 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
-
+				float _weight = 1 + (-100 * (!grid->isValidCell(nextPos) || !grid->isValidCell(currentPos)));
+				
 				Connection* connection = new Connection(current, n, _weight);
-				connections.push_back(new Connection(current, n, _weight));
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
 			}
@@ -192,19 +188,25 @@ void Graph::EnemyRangeWeight(Vector2D other)
 		{
 			if (prior == Vector2D())
 			{
-				connection->ResetWeight();
-				connection->weight += 100;
-
+				if (connection->weight >= 0)
+				{
+					connection->ResetWeight();
+					connection->weight += 100;
+				}
+				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
 			}
 			else if (!connection->ExistInConnection(prior))
 			{
-				connection->ResetWeight();
-				connection->weight += GetConnection(currentNode, prior)->weight - 25;
+				if (connection->weight >= 0)
+				{
+					connection->ResetWeight();
+					connection->weight += (GetConnection(currentNode, prior)->GetInitialWeight() - GetConnection(currentNode, prior)->weight) - 25;
+				}
 
 				float result = connection->weight - connection->GetInitialWeight();
 
-				if (result <= NULL)
+				if (result <= 1)
 					return;
 				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
