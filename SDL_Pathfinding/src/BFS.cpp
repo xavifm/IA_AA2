@@ -41,7 +41,7 @@ std::stack<Node*> BFS::calculatePath(Vector2D* position, Vector2D* goal, Graph* 
 				neighbour = neighbours[i]->GetNodeFrom();
 			}
 
-			if (neighbours[i]->weight < 50)
+			if (neighbours[i]->weight < 90)
 			{
 				if (came_from[neighbour->GetPosition().y][neighbour->GetPosition().x] == nullptr)
 				{

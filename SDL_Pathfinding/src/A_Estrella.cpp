@@ -54,18 +54,15 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 			}
 
 
-			if (neighbours[i]->weight < 50)
+			float hCost = new_cost + Heuristic(goal, &neighbour);
+			//Sumarli el pes del node en el graph
+			if (came_from[neighbour.y][neighbour.x].second == NULL || new_cost < came_from[neighbour.y][neighbour.x].second)
 			{
-				float hCost = new_cost + Heuristic(goal, &neighbour);
-				//Sumarli el pes del node en el graph
-				if (came_from[neighbour.y][neighbour.x].second == NULL || new_cost < came_from[neighbour.y][neighbour.x].second)
-				{
-					Node* node = new Node(neighbour);
-					frontier.push(node);
+				Node* node = new Node(neighbour);
+				frontier.push(node);
 
-					came_from[neighbour.y][neighbour.x].first = *current;
-					came_from[neighbour.y][neighbour.x].second = new_cost;
-				}
+				came_from[neighbour.y][neighbour.x].first = *current;
+				came_from[neighbour.y][neighbour.x].second = new_cost;
 			}
 		}
 	}

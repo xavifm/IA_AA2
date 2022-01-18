@@ -1,11 +1,13 @@
 #include "Graph.h"
 #include <stack>
+#include <queue>
+#include <utility>
 
 Connection::Connection(Node* _nodeFrom, Node* _nodeTo, float _weight)
 {
 	nodeFrom = _nodeFrom;
 	nodeTo = _nodeTo;
-	weight = _weight;
+	weight = initialWeight = _weight;
 
 }
 
@@ -14,9 +16,29 @@ bool const Connection::operator==(const Vector2D& npos) const
 	return (this->nodeFrom->GetPosition() == npos) || (this->nodeTo->GetPosition() == npos);
 }
 
-bool Node::ComparePosition(Vector2D pos)
+Node* Connection::GetNodeNotEqual(Vector2D pos)
 {
-	return (position == pos);
+	if (nodeTo->GetPosition() == pos)
+	{
+		return nodeFrom;
+	}
+	else if (nodeFrom->GetPosition() == pos)
+	{
+		return nodeTo;
+	}
+
+	return nullptr;
+}
+
+void Connection::ResetWeight()
+{ 
+	if(weight != initialWeight)
+		weight = initialWeight; 
+}
+
+bool Connection::ExistInConnection(Vector2D pos)
+{
+	return (nodeFrom->GetPosition() == pos) || (nodeTo->GetPosition() == pos);
 }
 
 Graph::Graph(Grid* grid)
@@ -46,7 +68,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -65,7 +87,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -84,7 +106,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -103,7 +125,7 @@ Graph::Graph(Grid* grid)
 				map[*n];
 
 				stack.push(n);
-				float _weight = 1 + 100 * !(grid->isValidCell(nextPos)) + 100 * !(grid->isValidCell(currentPos));
+				float _weight = 1 + 10000 * !(grid->isValidCell(nextPos)) + 10000 * !(grid->isValidCell(currentPos));
 
 				Connection* connection = new Connection(current, n, _weight);
 				connections.push_back(new Connection(current, n, _weight));
@@ -136,4 +158,57 @@ bool Graph::FindConnection(Vector2D current, Vector2D next)
 		}
 	}
 	return false;
+}
+
+Connection* Graph::GetConnection(Vector2D current, Vector2D next)
+{
+	for each (Connection * var in map[current])
+	{
+		if (var->GetNodeFrom()->GetPosition() == current && var->GetNodeTo()->GetPosition() == next)
+		{
+			return var;
+		}
+		else if (var->GetNodeTo()->GetPosition() == current && var->GetNodeFrom()->GetPosition() == next)
+		{
+			return var;
+		}
+	}
+	return nullptr;
+}
+
+void Graph::EnemyRangeWeight(Vector2D other)
+{
+
+	std::queue<std::pair<Vector2D,Vector2D>> currentNodes;
+	
+	currentNodes.push(std::make_pair(other, Vector2D()));
+	
+	while (!currentNodes.empty())
+	{
+		Vector2D currentNode = currentNodes.front().first;
+		Vector2D prior = currentNodes.front().second;
+		currentNodes.pop();
+		for each (Connection * connection in map[currentNode])
+		{
+			if (prior == Vector2D())
+			{
+				connection->ResetWeight();
+				connection->weight += 100;
+
+				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
+			}
+			else if (!connection->ExistInConnection(prior))
+			{
+				connection->ResetWeight();
+				connection->weight += GetConnection(currentNode, prior)->weight - 25;
+
+				float result = connection->weight - connection->GetInitialWeight();
+
+				if (result <= NULL)
+					return;
+				
+				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
+			}
+		}
+	}
 }

@@ -32,6 +32,8 @@ int Blackboard::GetInt(std::string key)
 void Blackboard::SetVector2D(std::string key, Vector2D value)
 {
 	theBlackboard[key] = &value;
+
+	graph->EnemyRangeWeight(value);
 }
 
 Vector2D Blackboard::GetVector2D(std::string key)

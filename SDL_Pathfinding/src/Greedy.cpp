@@ -55,7 +55,7 @@ std::stack<Node*> Greedy::calculatePath(Vector2D* position, Vector2D* goal, Grap
 				neighbour = neighbours[i]->GetNodeFrom()->GetPosition();
 			}
 
-			if (neighbours[i]->weight < 50)
+			if (neighbours[i]->weight < 90)
 			{
 				float hCost = new_cost + Heuristic(goal, &neighbour);
 				if ((came_from[neighbour.y][neighbour.x].first.GetPosition() == NULL || hCost < came_from[neighbour.y][neighbour.x].second))

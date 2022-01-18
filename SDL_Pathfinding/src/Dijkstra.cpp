@@ -44,7 +44,7 @@ std::stack<Node*> Dijkstra::calculatePath(Vector2D* position, Vector2D* goal, Gr
 			}
 
 
-			if (neighbours[i]->weight < 50)
+			if (neighbours[i]->weight < 90)
 			{
 				//Sumarli el pes del node en el graph
 				if (came_from[neighbour.y][neighbour.x].second == NULL || new_cost < came_from[neighbour.y][neighbour.x].second)

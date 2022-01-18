@@ -15,7 +15,7 @@ int main(int argc, char ** argv)
 	
 	SDL_SimpleApp *app = SDL_SimpleApp::Instance();
 
-	Scene *curr_scene = new ScenePathFindingMouse(ScenePathFindingMouse::PathFindingTypes::BREADTH_FIRST_SEARCH);
+	Scene *curr_scene = new ScenePathFindingMouse(ScenePathFindingMouse::PathFindingTypes::A_ESTRELLA);
 	std::cout << "BREADTH FIRST SEARCH" << std::endl;
 	app->setWindowTitle(curr_scene->getTitle());
 

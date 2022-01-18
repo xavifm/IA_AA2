@@ -138,7 +138,7 @@ void DynamicScenePathFinding::update(float dtime, SDL_Event *event)
 
 void DynamicScenePathFinding::calculateNewPath(Agent* agent)
 {
-	Vector2D cell = agent->getTarget();
+	Vector2D cell = maze->pix2cell(agent->getTarget());
 	if (maze->isValidCell(cell))
 	{
 		if (agent->getPathSize() != 0) { agent->clearPath(); }
