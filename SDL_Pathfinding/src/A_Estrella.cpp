@@ -85,12 +85,19 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 	Vector2D currentPos = *goal;
 	std::stack<Node*> path;
 	path.push(current);
+
+	int functionError = 0;
 	while (currentPos != *position)
 	{
+		if (functionError >= 99999)
+			break;
+
 		Node* node = new Node(came_from[currentPos.y][currentPos.x].first.GetPosition());
 
 		path.push(node);
 		currentPos = came_from[currentPos.y][currentPos.x].first.GetPosition();
+		functionError++;
+
 	}
 	return path;
 }
