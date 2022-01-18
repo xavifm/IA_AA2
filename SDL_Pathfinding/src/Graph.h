@@ -10,12 +10,14 @@ class Grid;
 
 class Node
 {
-	
 	Vector2D position;
 
 public:
+	float priority = 0;
+
 	Node() : position(NULL) {};
 	Node(Vector2D position) : position(position) {};
+
 
 	Vector2D GetPosition() { return position; }
 
@@ -23,28 +25,36 @@ public:
 	{
 		return (lhs.position.x == this->GetPosition().x) && (lhs.position.y == this->GetPosition().y);
 	}
-	bool const operator<=(const Node& lhs)
+	/*bool const operator<=(const Node& lhs)
 	{
 		return (lhs.position.x > this->GetPosition().x) || ((lhs.position.x == this->GetPosition().x) && (lhs.position.y >= this->GetPosition().y));
 	}
 	bool const operator>=(const Node& lhs)
 	{
 		return (lhs.position.x < this->GetPosition().x) || ((lhs.position.x == this->GetPosition().x) && (lhs.position.y <= this->GetPosition().y));
-	}
+	}*/
 	bool operator<(const Node& ob) const {
 		return position.x < ob.position.x || (position.x == ob.position.x && position.y < ob.position.y);
 	}
 	bool const operator>(const Node& lhs)
 	{
-		return (position.x > lhs.position.x)/* || ((position.x == lhs.position.x) && (position.y > lhs.position.y)) */ ;
+		return (position.x > lhs.position.x);
+	}
+	bool const operator<=(const Node*& lhs)
+	{
+		return priority <= lhs->priority;
+	}
+	bool const operator>=(const Node*& lhs)
+	{
+		return priority >= lhs->priority;
 	}
 	bool const operator<(const Node*& lhs)
 	{
-		return (position.x < lhs->position.x)/* || ((position.x == lhs.position.x) && (position.y < lhs.position.y))*/;
+		return priority < lhs->priority;
 	}
 	bool const operator>(const Node*& lhs)
 	{
-		return (position.x > lhs->position.x)/* || ((position.x == lhs.position.x) && (position.y > lhs.position.y)) */;
+		return priority > lhs->priority;
 	}
 	bool const operator!= (const Node& lhs) { return (lhs.position.x != this->GetPosition().x) || (lhs.position.y != this->GetPosition().y); }
 };

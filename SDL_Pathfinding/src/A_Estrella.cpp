@@ -16,6 +16,8 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 	std::priority_queue<Node*, std::vector<Node*>, std::greater_equal<Node*>> frontier;
 	Node* firstNode = new Node(*position);
 
+	firstNode->priority = Heuristic(goal, position);
+
 	frontier.push(firstNode);
 	std::vector<std::vector<std::pair<Node, float>>> came_from(graph->GetGridSize().y);
 
@@ -33,7 +35,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 	while (!frontier.empty())
 	{
 		current = frontier.top();
-		float new_cost = came_from[current->GetPosition().y][current->GetPosition().x].second + 1;
+		float new_cost = came_from[current->GetPosition().y][current->GetPosition().x].second;
 		frontier.pop();
 		if (current->GetPosition() == *goal)
 			break;
@@ -53,16 +55,24 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 				neighbour = neighbours[i]->GetNodeFrom()->GetPosition();
 			}
 
-
-			float hCost = new_cost + Heuristic(goal, &neighbour);
-			//Sumarli el pes del node en el graph
-			if (came_from[neighbour.y][neighbour.x].second == NULL || new_cost < came_from[neighbour.y][neighbour.x].second)
+			if (neighbours[i]->GetInitialWeight() >= 0)
 			{
-				Node* node = new Node(neighbour);
-				frontier.push(node);
+				new_cost += neighbours[i]->weight;
 
-				came_from[neighbour.y][neighbour.x].first = *current;
-				came_from[neighbour.y][neighbour.x].second = new_cost;
+				float hCost = new_cost + Heuristic(goal, &neighbour);
+
+				//Sumarli el pes del node en el graph
+				if (came_from[neighbour.y][neighbour.x].second == NULL || new_cost < came_from[neighbour.y][neighbour.x].second)
+				{
+					Node* node = new Node(neighbour);
+					node->priority = hCost;
+					frontier.push(node);
+
+					bool tmp = node < current;
+
+					came_from[neighbour.y][neighbour.x].first = *current;
+					came_from[neighbour.y][neighbour.x].second = new_cost;
+				}
 			}
 		}
 	}
