@@ -174,16 +174,14 @@ Connection* Graph::GetConnection(Vector2D current, Vector2D next)
 
 void Graph::EnemyRangeWeight(Vector2D other)
 {
-
 	std::queue<std::pair<Vector2D,Vector2D>> currentNodes;
+	std::map<Node, float> visited;
 	
 	currentNodes.push(std::make_pair(other, Vector2D()));
 	
 	while (!currentNodes.empty())
 	{
-		int offset = CELL_SIZE / 2;
-
-		Vector2D currentNode = Vector2D((float)((int)currentNodes.front().first.x / CELL_SIZE), (float)((int)currentNodes.front().first.y / CELL_SIZE));
+		Vector2D currentNode = currentNodes.front().first;
 		Vector2D prior = currentNodes.front().second;
 		currentNodes.pop();
 		for each (Connection * connection in map[currentNode])
@@ -193,17 +191,20 @@ void Graph::EnemyRangeWeight(Vector2D other)
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
-					connection->weight = -100;
+					connection->weight += 1000;
+
+					visited[currentNode] = 1;
 				}
 				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
 			}
-			else if (!connection->ExistInConnection(prior))
+			else if (!connection->ExistInConnection(prior) && visited[currentNode] != 1)
 			{
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
-					connection->weight = -100;
+					connection->weight += (GetConnection(currentNode, prior)->weight - GetConnection(currentNode, prior)->GetInitialWeight()) - 25;
+					visited[currentNode] = 1;
 				}
 
 				float result = connection->weight - connection->GetInitialWeight();

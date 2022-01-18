@@ -65,7 +65,7 @@ void SensorySystem::Update(Agent* agent, float dtime)
 			CheckIfAPositionIsInsideViewCone(agents[i]->getPosition(), agent->getPosition(), agent->getVelocity()) &&
 			CheckLineOfSight(agent->getPosition(), agents[i]->getPosition(), world->GetGrid()))
 		{
-			agent->GetBlackboard()->SetVector2D("enemy", agents[i]->getPosition());
+			agent->GetBlackboard()->SetVector2D("enemy", world->GetGrid()->pix2cell(agents[i]->getPosition()));
 			agent->GetBlackboard()->SetInt("enemyX", world->GetGrid()->pix2cell(agents[i]->getPosition()).x);
 			agent->GetBlackboard()->SetInt("enemyY", world->GetGrid()->pix2cell(agents[i]->getPosition()).y);
 			//agent->GetBlackboard()->SetInt("chase", 1);

@@ -20,25 +20,23 @@ FSMState* FSMState_Wander::Update(Agent* agent, float dTime)
 
 	//Agent deploy state actions/movement
 
-	int recalculateTMP = agent->GetBlackboard()->GetInt("recalculatePath");
+	bool recalculateTMP = agent->GetBlackboard()->GetInt("recalculatePath");
 
-	if(recalculateTMP == 1 || Vector2D::Distance(agent->getPosition(), agent->getTarget()) <= 20)
+	if (recalculateTMP)
 	{
-		if(recalculateTMP == 1) 
-		{
-			agent->SetRandomTarget();
-			agent->CalculatePath();
-			agent->GetBlackboard()->SetInt("recalculatePath", 0);
-		}
-		else 
-		{
-			agent->SetRandomTarget();
-			Vector2D TMP = agent->getTarget();
-			agent->CalculatePath();
-		}
+		agent->SetRandomTarget();
+		agent->CalculatePath();
+		agent->GetBlackboard()->SetInt("recalculatePath", 0);
 	}
 
-	int chaseTMP = agent->GetBlackboard()->GetInt("chase");
+	if(Vector2D::Distance(agent->getPosition(), agent->getTarget()) <= 20)
+	{
+		agent->SetRandomTarget();
+		Vector2D TMP = agent->getTarget();
+		agent->CalculatePath();
+	}
+
+	bool chaseTMP = agent->GetBlackboard()->GetInt("chase");
 
 	//Transitions between states are checked here!
 	if (chaseTMP)
