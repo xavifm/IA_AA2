@@ -99,5 +99,6 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 		functionError++;
 
 	}
+	if(functionError < 99999)
 	return path;
 }
