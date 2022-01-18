@@ -68,7 +68,8 @@ void SensorySystem::Update(Agent* agent, float dtime)
 			agent->GetBlackboard()->SetVector2D("enemy", agents[i]->getPosition());
 			agent->GetBlackboard()->SetInt("enemyX", world->GetGrid()->pix2cell(agents[i]->getPosition()).x);
 			agent->GetBlackboard()->SetInt("enemyY", world->GetGrid()->pix2cell(agents[i]->getPosition()).y);
-			agent->GetBlackboard()->SetInt("chase", 1);
+			//agent->GetBlackboard()->SetInt("chase", 1);
+			agent->GetBlackboard()->SetInt("recalculatePath", 1);
 		}
 		else if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) > visionRange)
 		{

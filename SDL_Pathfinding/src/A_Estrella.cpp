@@ -55,7 +55,7 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 				neighbour = neighbours[i]->GetNodeFrom()->GetPosition();
 			}
 
-			if (neighbours[i]->GetInitialWeight() >= 0)
+			if (neighbours[i]->GetInitialWeight() >= 0 && neighbours[i]->weight != -100)
 			{
 				new_cost += neighbours[i]->weight;
 
@@ -75,6 +75,8 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 					came_from[neighbour.y][neighbour.x].second = new_cost;
 				}
 			}
+			else if (neighbours[i]->weight == -100)
+				neighbours[i]->weight = 1;
 		}
 	}
 

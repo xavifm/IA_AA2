@@ -181,7 +181,9 @@ void Graph::EnemyRangeWeight(Vector2D other)
 	
 	while (!currentNodes.empty())
 	{
-		Vector2D currentNode = currentNodes.front().first;
+		int offset = CELL_SIZE / 2;
+
+		Vector2D currentNode = Vector2D((float)((int)currentNodes.front().first.x / CELL_SIZE), (float)((int)currentNodes.front().first.y / CELL_SIZE));
 		Vector2D prior = currentNodes.front().second;
 		currentNodes.pop();
 		for each (Connection * connection in map[currentNode])
@@ -191,7 +193,7 @@ void Graph::EnemyRangeWeight(Vector2D other)
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
-					connection->weight += 100;
+					connection->weight = -100;
 				}
 				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
@@ -201,7 +203,7 @@ void Graph::EnemyRangeWeight(Vector2D other)
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
-					connection->weight += 100 - 2;
+					connection->weight = -100;
 				}
 
 				float result = connection->weight - connection->GetInitialWeight();
