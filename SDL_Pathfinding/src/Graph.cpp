@@ -201,7 +201,7 @@ void Graph::EnemyRangeWeight(Vector2D other)
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
-					connection->weight += (GetConnection(currentNode, prior)->GetInitialWeight() - GetConnection(currentNode, prior)->weight) - 25;
+					connection->weight += 100 - 2;
 				}
 
 				float result = connection->weight - connection->GetInitialWeight();
