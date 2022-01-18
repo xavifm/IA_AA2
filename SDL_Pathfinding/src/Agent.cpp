@@ -95,7 +95,8 @@ void Agent::update(float dtime, SDL_Event *event)
 {
 	sensors->Update(this, dtime);
 	decisionAlgorithm->Update(this, dtime);
-	//cout << "agent update:" << endl;
+
+	cout << target.x << " " << target.y << endl;
 
 	switch (event->type) {
 		/* Keyboard & Mouse events */

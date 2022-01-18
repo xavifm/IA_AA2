@@ -60,14 +60,20 @@ void SensorySystem::Update(Agent* agent, float dtime)
 	for (int i = 0; i < agents.size(); i++)
 	{
 		if (agents[i] == agent) continue;
-		
+
+		agent->GetBlackboard()->SetVector2D("enemy", agents[i]->getPosition());
+		agent->GetBlackboard()->SetInt("enemyX", world->GetGrid()->pix2cell(agents[i]->getPosition()).x);
+		agent->GetBlackboard()->SetInt("enemyY", world->GetGrid()->pix2cell(agents[i]->getPosition()).y);
+
 		if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) <= visionRange && 
 			CheckIfAPositionIsInsideViewCone(agents[i]->getPosition(), agent->getPosition(), agent->getVelocity()) &&
 			CheckLineOfSight(agent->getPosition(), agents[i]->getPosition(), world->GetGrid()))
 		{
-			agent->GetBlackboard()->SetVector2D("enemy" + std::to_string(i), world->GetGrid()->pix2cell(agents[i]->getPosition()));
-
-			CalculatePath(agent);
+			agent->GetBlackboard()->SetInt("chase", 1);
+		}
+		else if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) > visionRange)
+		{
+			agent->GetBlackboard()->SetInt("chase", 0);
 		}
 	}
 }

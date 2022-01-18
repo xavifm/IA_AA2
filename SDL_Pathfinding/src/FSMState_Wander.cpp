@@ -16,6 +16,7 @@ void FSMState_Wander::Enter()
 FSMState* FSMState_Wander::Update(Agent* agent, float dTime)
 {
 	bool enemySpotted = false;
+	timeToChange = false;
 
 	//Agent deploy state actions/movement
 
@@ -26,8 +27,11 @@ FSMState* FSMState_Wander::Update(Agent* agent, float dTime)
 		agent->CalculatePath();
 	}
 
+	int chaseTMP = agent->GetBlackboard()->GetInt("chase");
+
 	//Transitions between states are checked here!
-	if (enemySpotted) timeToChange = true;
+	if (chaseTMP)
+		timeToChange = true;
 
 	if (timeToChange) return new FSMState_Chase();	//Només podem passar a Chase des d'aquest estat
 	else return nullptr;

@@ -19,9 +19,13 @@ FSMState* FSMState_Chase::Update(Agent* agent, float dTime)
 	bool enemyHasGun = false;
 	
 	//Agent deploy state actions/movement
+	Vector2D enemyPos = Vector2D(agent->GetBlackboard()->GetInt("enemyX"), agent->GetBlackboard()->GetInt("enemyY"));
+	agent->setTarget(enemyPos);
+	agent->CalculatePath();
+
 
 	//Transitions between states are checked here!
-	if (looseEnemy) newState = new FSMState_Wander();
+	newState = new FSMState_Wander();
 	if (enemyHasGun) newState = new FSMState_Flee();
 
 	return newState;	//Els següents estats poden ser Wander o Flee
