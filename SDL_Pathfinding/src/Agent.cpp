@@ -97,6 +97,8 @@ void Agent::setVelocity(Vector2D _velocity)
 
 void Agent::update(float dtime, SDL_Event *event)
 {
+	blackboard->GetGraphPtr()->ResetWeights();
+
 	sensors->Update(this, dtime);
 	Grid* g = sensors->GetGrid();
 

@@ -99,4 +99,6 @@ public:
 	Vector2D GetGridSize() { return mapSize; };
 
 	void EnemyRangeWeight(Vector2D other);
+
+	void ResetWeights();
 };

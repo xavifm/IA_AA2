@@ -51,4 +51,6 @@ private:
 	bool loadTextures(char* filename_bg, char* filename_coin);
 	Vector2D target;
 
+	Vector2D FindValidPosition(Vector2D pos);
+
 };

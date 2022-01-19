@@ -139,6 +139,10 @@ void ScenePathFindingMouse::calculateNewPath(Agent* agent)
 		if (agent->getPathSize() != 0) { agent->clearPath(); }
 		Vector2D pos = maze->pix2cell(agent->getPosition());
 		std::stack<Node*> pathfinding = pathFinder->calculatePath(&pos, &cell, agent->GetBlackboard()->GetGraphPtr());
+		if (pathfinding.empty())
+		{
+			agent->setPosition(FindValidPosition(agent->getPosition()));
+		}
 		while (!pathfinding.empty())
 		{
 			agent->addPathPoint(maze->cell2pix(pathfinding.top()->GetPosition()));
@@ -233,4 +237,20 @@ bool ScenePathFindingMouse::loadTextures(char* filename_bg, char* filename_coin)
 		SDL_FreeSurface(image);
 
 	return true;
+}
+
+Vector2D ScenePathFindingMouse::FindValidPosition(Vector2D pos)
+{
+	Vector2D p = maze->pix2cell(pos);
+
+	if (maze->isValidCell(Vector2D(p.x + 1, p.y)))
+		return maze->cell2pix(Vector2D(p.x + 1, p.y));
+	if (maze->isValidCell(Vector2D(p.x - 1, p.y)))
+		return maze->cell2pix(Vector2D(p.x - 1, p.y));
+	if (maze->isValidCell(Vector2D(p.x, p.y + 1)))
+		return maze->cell2pix(Vector2D(p.x, p.y + 1));
+	if (maze->isValidCell(Vector2D(p.x, p.y - 1)))
+		return maze->cell2pix(Vector2D(p.x, p.y - 1));
+
+	return pos;
 }

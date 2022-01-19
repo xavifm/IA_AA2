@@ -73,6 +73,8 @@ Graph::Graph(Grid* grid)
 				Connection* connection = new Connection(current, n, _weight);
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
+
+				connections.push_back(connection);
 			}
 		}
 
@@ -91,6 +93,8 @@ Graph::Graph(Grid* grid)
 				Connection* connection = new Connection(current, n, _weight);
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
+
+				connections.push_back(connection);
 			}
 		}
 
@@ -109,6 +113,8 @@ Graph::Graph(Grid* grid)
 				Connection* connection = new Connection(current, n, _weight);
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
+
+				connections.push_back(connection);
 			}
 		}
 
@@ -127,6 +133,8 @@ Graph::Graph(Grid* grid)
 				Connection* connection = new Connection(current, n, _weight);
 				map[*current].push_back(connection);
 				map[*n].push_back(connection);
+
+				connections.push_back(connection);
 			}
 		}
 	}
@@ -214,6 +222,17 @@ void Graph::EnemyRangeWeight(Vector2D other)
 				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
 			}
+		}
+	}
+}
+
+void Graph::ResetWeights()
+{
+	for each (auto connection in connections)
+	{
+		if (connection->weight != connection->GetInitialWeight())
+		{
+			connection->weight = connection->GetInitialWeight();
 		}
 	}
 }
