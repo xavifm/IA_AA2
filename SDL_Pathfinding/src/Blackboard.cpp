@@ -31,14 +31,22 @@ int Blackboard::GetInt(std::string key)
 
 void Blackboard::SetVector2D(std::string key, Vector2D value)
 {
-	theBlackboard[key] = (Vector2D*) &value;
+    float* tmp = new float(value.x);
+    theBlackboard[key + "x"] = tmp;
 
-	graph->EnemyRangeWeight(value);
+    tmp = new float(value.y);
+    theBlackboard[key + "y"] = tmp;
+
+    graph->EnemyRangeWeight(value);
 }
 
 Vector2D Blackboard::GetVector2D(std::string key)
 {
-	return *(Vector2D*) theBlackboard[key];
+    Vector2D tmp;
+    tmp.x = *(float*)theBlackboard[key + "x"];
+    tmp.y = *(float*)theBlackboard[key + "y"];
+
+    return tmp;
 }
 
 void Blackboard::SetGraphPtr(Graph* value)

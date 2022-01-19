@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Agent::Agent(Scene* world, Grid* maze, bool player) : sprite_texture(0),
+Agent::Agent(Scene* world, Grid* maze, bool player, bool gun) : sprite_texture(0),
                  position(Vector2D(100, 100)),
 	             target(Vector2D(1000, 100)),
 	             velocity(Vector2D(0,0)),
@@ -26,6 +26,7 @@ Agent::Agent(Scene* world, Grid* maze, bool player) : sprite_texture(0),
 
 	blackboard->SetGraphPtr(g);
 
+	hasGun = gun;
 	isPlayer = player;
 
 	if (!isPlayer)
@@ -97,11 +98,11 @@ void Agent::setVelocity(Vector2D _velocity)
 void Agent::update(float dtime, SDL_Event *event)
 {
 	sensors->Update(this, dtime);
+	Grid* g = sensors->GetGrid();
 
 	if (!isPlayer)
 	{
 		decisionAlgorithm->Update(this, dtime);
-		Grid* g = sensors->GetGrid();
 
 		if (!g->isValidCell(g->pix2cell(target)))
 			SetRandomTarget();	//Esperem a que torni a moure al seguent frame
@@ -132,6 +133,7 @@ void Agent::update(float dtime, SDL_Event *event)
 	if (position.y < 0) position.y = TheApp::Instance()->getWinSize().y;
 	if (position.x > TheApp::Instance()->getWinSize().x) position.x = 0;
 	if (position.y > TheApp::Instance()->getWinSize().y) position.y = 0;
+
 }
 
 

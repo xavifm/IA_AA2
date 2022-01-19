@@ -52,9 +52,10 @@ private:
 	DecisionMakingAlgorithm* decisionAlgorithm;
 
 	bool isPlayer;
+	bool hasGun;
 
 public:
-	Agent(Scene* world, Grid* g, bool player);
+	Agent(Scene* world, Grid* g, bool player, bool gun = false);
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();
@@ -77,6 +78,7 @@ public:
 	bool Agent::loadSpriteTexture(char* filename, int num_frames=1);
 	void SetRandomTarget();
 	void CalculatePath();
+	bool HasGun() { return hasGun; }
 
 	Blackboard* GetBlackboard();
 	

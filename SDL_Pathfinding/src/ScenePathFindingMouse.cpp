@@ -42,13 +42,13 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent(this, maze, false);
+	Agent *agent = new Agent(this, maze, false);	//don't have gun
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agents.push_back(agent);
 
-	agent = new Agent(this, maze, false);
+	agent = new Agent(this, maze, false, true);	//has gun
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20, -20));
@@ -112,11 +112,12 @@ void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 	switch (event->type) {
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
-			if (event->button.button == SDL_BUTTON_LEFT)
+			if (event->button.clicks == SDL_BUTTON_LEFT)
 			{
 				target = Vector2D((float)(event->button.x), (float)(event->button.y));
-				target = maze->pix2cell(target);
-				agents[2]->setTarget(target);
+				Vector2D tmp = maze->pix2cell(target);
+				target = maze->cell2pix(tmp);
+				agents[2]->setTarget(tmp);
 			}
 			break;
 		default:
@@ -150,7 +151,6 @@ void ScenePathFindingMouse::draw()
 {
 	drawMaze();
 	drawCoin();
-	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
 
 	if (draw_grid)
 	{
@@ -169,6 +169,7 @@ void ScenePathFindingMouse::draw()
 	{
 		agents[i]->draw();
 	}
+	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
 }
 
 const char* ScenePathFindingMouse::getTitle()

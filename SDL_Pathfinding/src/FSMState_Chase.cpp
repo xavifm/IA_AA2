@@ -15,18 +15,22 @@ void FSMState_Chase::Enter()
 FSMState* FSMState_Chase::Update(Agent* agent, float dTime)
 {	
 	FSMState* newState = nullptr;
-	bool looseEnemy = false;
+	bool hasEnemy = false;
 	bool enemyHasGun = false;
 	
 	//Agent deploy state actions/movement
-	Vector2D enemyPos = Vector2D(agent->GetBlackboard()->GetInt("enemyX"), agent->GetBlackboard()->GetInt("enemyY"));
+	Vector2D enemyPos = agent->GetBlackboard()->GetVector2D("enemy");
 	agent->setTarget(enemyPos);
 	agent->CalculatePath();
 
+	enemyHasGun = bool(agent->GetBlackboard()->GetInt("flee"));
+	hasEnemy = bool(agent->GetBlackboard()->GetInt("chase"));
 
 	//Transitions between states are checked here!
-	newState = new FSMState_Wander();
-	if (enemyHasGun) newState = new FSMState_Flee();
+	if (!hasEnemy)
+		newState = new FSMState_Wander();
+	else if (enemyHasGun)
+		newState = new FSMState_Flee();
 
 	return newState;	//Els següents estats poden ser Wander o Flee
 }

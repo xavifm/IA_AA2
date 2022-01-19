@@ -66,10 +66,15 @@ void SensorySystem::Update(Agent* agent, float dtime)
 			CheckLineOfSight(agent->getPosition(), agents[i]->getPosition(), world->GetGrid()))
 		{
 			agent->GetBlackboard()->SetVector2D("enemy", world->GetGrid()->pix2cell(agents[i]->getPosition()));
-			agent->GetBlackboard()->SetInt("enemyX", world->GetGrid()->pix2cell(agents[i]->getPosition()).x);
-			agent->GetBlackboard()->SetInt("enemyY", world->GetGrid()->pix2cell(agents[i]->getPosition()).y);
-			//agent->GetBlackboard()->SetInt("chase", 1);
-			agent->GetBlackboard()->SetInt("recalculatePath", 1);
+
+			if (agents[i]->HasGun())
+			{
+				agent->GetBlackboard()->SetInt("flee", 1);
+			}
+			else
+			{
+				agent->GetBlackboard()->SetInt("chase", 1);
+			}
 		}
 		else if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) > visionRange)
 		{

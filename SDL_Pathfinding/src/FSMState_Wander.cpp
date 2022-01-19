@@ -42,7 +42,8 @@ FSMState* FSMState_Wander::Update(Agent* agent, float dTime)
 	if (chaseTMP)
 		timeToChange = true;
 
-	if (timeToChange) return new FSMState_Chase();	//Només podem passar a Chase des d'aquest estat
+	if (timeToChange)
+		return new FSMState_Chase();	//Només podem passar a Chase des d'aquest estat
 	else return nullptr;
 }
 
