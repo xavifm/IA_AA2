@@ -20,8 +20,16 @@ FSMState* FSMState_Flee::Update(Agent* agent, float dTime)
 
 	//Agent deploy state actions/movement
 	//Modificar els booleans aqui
-	Vector2D enemyPos = Vector2D(agent->GetBlackboard()->GetInt("enemyX"), agent->GetBlackboard()->GetInt("enemyY"));
-	agent->setTarget(enemyPos);
+	Vector2D enemyPos = agent->GetBlackboard()->GetVector2D("enemy");
+
+	while (true)
+	{
+		agent->SetRandomTarget();
+		Vector2D newPos = agent->getTarget();
+
+		if (Vector2D::Distance(enemyPos, newPos) > 6 * CELL_SIZE)
+			break;
+	}
 	agent->CalculatePath();
 
 	enemyHasGun = bool(agent->GetBlackboard()->GetInt("flee"));

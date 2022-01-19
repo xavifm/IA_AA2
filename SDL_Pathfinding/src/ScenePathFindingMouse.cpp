@@ -142,6 +142,8 @@ void ScenePathFindingMouse::calculateNewPath(Agent* agent)
 		if (pathfinding.empty())
 		{
 			agent->setPosition(FindValidPosition(agent->getPosition()));
+			calculateNewPath(agent);
+			return;
 		}
 		while (!pathfinding.empty())
 		{
