@@ -109,9 +109,6 @@ void Agent::update(float dtime, SDL_Event *event)
 		if (!g->isValidCell(g->pix2cell(target)))
 			SetRandomTarget();	//Esperem a que torni a moure al seguent frame
 	}
-		
-
-	cout << target.x << " " << target.y << endl;
 
 	switch (event->type) {
 		/* Keyboard & Mouse events */
