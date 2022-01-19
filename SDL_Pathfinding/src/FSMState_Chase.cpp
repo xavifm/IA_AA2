@@ -27,14 +27,14 @@ FSMState* FSMState_Chase::Update(Agent* agent, float dTime)
 	hasEnemy = bool(agent->GetBlackboard()->GetInt("chase"));
 
 	//Transitions between states are checked here!
-	if (!hasEnemy)
+	if (enemyHasGun)
+		newState = new FSMState_Flee();
+	else if (!hasEnemy)
 	{
 		agent->SetRandomTarget();
 		agent->CalculatePath();
 		newState = new FSMState_Wander();
 	}
-	else if (enemyHasGun)
-		newState = new FSMState_Flee();
 
 	return newState;	//Els següents estats poden ser Wander o Flee
 }
