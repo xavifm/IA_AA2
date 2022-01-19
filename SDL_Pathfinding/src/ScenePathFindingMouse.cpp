@@ -42,13 +42,19 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent(this, maze);
+	Agent *agent = new Agent(this, maze, false);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agents.push_back(agent);
 
-	agent = new Agent(this, maze);
+	agent = new Agent(this, maze, false);
+	agent->loadSpriteTexture("../res/soldier.png", 4);
+	agent->setBehavior(new PathFollowing);
+	agent->setTarget(Vector2D(-20, -20));
+	agents.push_back(agent);
+
+	agent = new Agent(this, maze, true);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20, -20));
@@ -64,6 +70,9 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 	agents[1]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 4, rand_cell.y - 3)));
 	agents[1]->setVelocity(Vector2D(0, 1));
 	agents[1]->setTarget(agents[1]->getPosition());
+	agents[2]->setPosition(maze->cell2pix(Vector2D(rand_cell.x - 2, rand_cell.y - 2)));
+	agents[2]->setVelocity(Vector2D(0, 1));
+	agents[2]->setTarget(agents[2]->getPosition());
 
 	// set the coin in a random cell (but at least 3 cells far from the agent)
 	coinPosition = Vector2D(-1,-1);
@@ -79,6 +88,7 @@ ScenePathFindingMouse::ScenePathFindingMouse(PathFindingTypes type)
 			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	}
 	coinPosition = coinLocations[0];
+	target = Vector2D();
 }
 
 ScenePathFindingMouse::~ScenePathFindingMouse()
@@ -98,6 +108,22 @@ ScenePathFindingMouse::~ScenePathFindingMouse()
 
 void ScenePathFindingMouse::update(float dtime, SDL_Event *event)
 {
+	//MOUSE EVENT
+	switch (event->type) {
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONDOWN:
+			if (event->button.button == SDL_BUTTON_LEFT)
+			{
+				target = Vector2D((float)(event->button.x), (float)(event->button.y));
+				target = maze->pix2cell(target);
+				agents[2]->setTarget(target);
+			}
+			break;
+		default:
+			break;
+	}
+	calculateNewPath(agents[2]);
+
 	for (size_t i = 0; i < agents.size(); i++)
 	{
 		agents[i]->update(dtime, event);
@@ -124,6 +150,7 @@ void ScenePathFindingMouse::draw()
 {
 	drawMaze();
 	drawCoin();
+	draw_circle(TheApp::Instance()->getRenderer(), (int)target.x, (int)target.y, 15, 255, 0, 0, 255);
 
 	if (draw_grid)
 	{
@@ -167,8 +194,6 @@ void ScenePathFindingMouse::drawMaze()
 			} else {
 				// Do not draw if it is not necessary (bg is already black)
 			}
-					
-			
 		}
 	}
 	//Alternative: render a backgroud texture:

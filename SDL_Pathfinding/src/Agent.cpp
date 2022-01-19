@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Agent::Agent(Scene* world, Grid* maze) : sprite_texture(0),
+Agent::Agent(Scene* world, Grid* maze, bool player) : sprite_texture(0),
                  position(Vector2D(100, 100)),
 	             target(Vector2D(1000, 100)),
 	             velocity(Vector2D(0,0)),
@@ -26,7 +26,10 @@ Agent::Agent(Scene* world, Grid* maze) : sprite_texture(0),
 
 	blackboard->SetGraphPtr(g);
 
-	decisionAlgorithm = new FSM();
+	isPlayer = player;
+
+	if (!isPlayer)
+		decisionAlgorithm = new FSM();
 	
 }
 
@@ -94,7 +97,16 @@ void Agent::setVelocity(Vector2D _velocity)
 void Agent::update(float dtime, SDL_Event *event)
 {
 	sensors->Update(this, dtime);
-	decisionAlgorithm->Update(this, dtime);
+
+	if (!isPlayer)
+	{
+		decisionAlgorithm->Update(this, dtime);
+		Grid* g = sensors->GetGrid();
+
+		if (!g->isValidCell(g->pix2cell(target)))
+			SetRandomTarget();	//Esperem a que torni a moure al seguent frame
+	}
+		
 
 	cout << target.x << " " << target.y << endl;
 

@@ -13,12 +13,12 @@ DynamicScenePathFinding::DynamicScenePathFinding(PathFindingTypes type)
 
 	pathType = type;
 
-	Agent *agent = new Agent(this, maze);
+	Agent *agent = new Agent(this, maze, false);
 	agent->loadSpriteTexture("../res/soldier.png", 4);
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 
-	Agent* agent2 = new Agent(this, maze);
+	Agent* agent2 = new Agent(this, maze, false);
 	agent2->loadSpriteTexture("../res/soldier.png", 4);
 	agent2->setBehavior(new PathFollowing);
 	agent2->setTarget(Vector2D(-20, -20));

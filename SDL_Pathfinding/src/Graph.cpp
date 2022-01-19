@@ -175,7 +175,7 @@ Connection* Graph::GetConnection(Vector2D current, Vector2D next)
 void Graph::EnemyRangeWeight(Vector2D other)
 {
 	std::queue<std::pair<Vector2D,Vector2D>> currentNodes;
-	std::map<Node, float> visited;
+	std::map<Node, bool> visited;
 	
 	currentNodes.push(std::make_pair(other, Vector2D()));
 	
@@ -193,18 +193,18 @@ void Graph::EnemyRangeWeight(Vector2D other)
 					connection->ResetWeight();
 					connection->weight += 1000;
 
-					visited[currentNode] = 1;
+					visited[currentNode] = true;
 				}
 				
 				currentNodes.push(std::make_pair(connection->GetNodeNotEqual(currentNode)->GetPosition(), currentNode));
 			}
-			else if (!connection->ExistInConnection(prior) && visited[currentNode] != 1)
+			else if (!connection->ExistInConnection(prior) && !visited[currentNode])
 			{
 				if (connection->weight >= 0)
 				{
 					connection->ResetWeight();
 					connection->weight += (GetConnection(currentNode, prior)->weight - GetConnection(currentNode, prior)->GetInitialWeight()) - 25;
-					visited[currentNode] = 1;
+					visited[currentNode] = true;
 				}
 
 				float result = connection->weight - connection->GetInitialWeight();

@@ -27,4 +27,5 @@ public:
 	void Update(Agent* agent, float dtime);
 	void CalculatePath(Agent* agent);
 	Vector2D GetRandomCell();
+	Grid* GetGrid() { return world->GetGrid(); }
 };

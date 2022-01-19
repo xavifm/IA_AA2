@@ -51,8 +51,10 @@ private:
 
 	DecisionMakingAlgorithm* decisionAlgorithm;
 
+	bool isPlayer;
+
 public:
-	Agent(Scene* world, Grid* g);
+	Agent(Scene* world, Grid* g, bool player);
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();

@@ -89,8 +89,8 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 	int functionError = 0;
 	while (currentPos != *position)
 	{
-		/*if (functionError >= 99999)
-			break;*/
+		if (functionError >= 99999)
+			break;
 
 		Node* node = new Node(came_from[currentPos.y][currentPos.x].first.GetPosition());
 
@@ -99,6 +99,5 @@ std::stack<Node*> A_Estrella::calculatePath(Vector2D* position, Vector2D* goal, 
 		functionError++;
 
 	}
-	/*if(functionError < 99999)*/
 	return path;
 }
