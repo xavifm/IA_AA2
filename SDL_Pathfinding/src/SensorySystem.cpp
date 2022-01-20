@@ -78,6 +78,7 @@ void SensorySystem::Update(Agent* agent, float dtime)
 		}
 		else if(ViewDistance(agents[i]->getPosition(), agent->getPosition()) > visionRange)
 		{
+			agent->GetBlackboard()->SetInt("flee", 0);
 			agent->GetBlackboard()->SetInt("chase", 0);
 		}
 	}
